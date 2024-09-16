@@ -5,7 +5,7 @@ src = "./"
 
 authors = ["Max Netyaga \"@maxnetyaga\""]
 
-title = "Курсова робота \"Бази данних\". ІМ-34 Система управління проектами"
+title = "Курсова робота \"Бази данних\". ІМ-34 Система управління проєктами"
 
 [preprocessor.plantuml]
 plantuml-cmd = "http://www.plantuml.com/plantuml"
