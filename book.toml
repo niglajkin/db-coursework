@@ -1,0 +1,12 @@
+[book]
+language = "uk"
+multilingual = false
+src = "./"
+
+authors = ["Max Netyaga \"@maxnetyaga\""]
+
+title = "Курсова робота \"Бази данних\". ІМ-34 Система управління проектами"
+
+[preprocessor.plantuml]
+plantuml-cmd = "http://www.plantuml.com/plantuml"
+use-data-uris = true

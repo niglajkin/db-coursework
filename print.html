@@ -1,0 +1,1576 @@
+<!DOCTYPE HTML>
+<html lang="uk" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Курсова робота &quot;Бази данних&quot;. ІМ-34 Система управління проектами</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="project/index.html">Титульна сторінка</a></li><li class="chapter-item expanded affix "><li class="part-title">Документація проєкту</li><li class="chapter-item expanded "><a href="project/intro.html"><strong aria-hidden="true">1.</strong> Вступ</a></li><li class="chapter-item expanded "><a href="project/requirements.html"><strong aria-hidden="true">2.</strong> Розроблення загальних вимог до системи</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="project/state-of-the-art.html"><strong aria-hidden="true">2.1.</strong> Аналіз предметної області</a></li><li class="chapter-item expanded "><a href="project/stakeholders-needs.html"><strong aria-hidden="true">2.2.</strong> Запити зацікавлених осіб</a></li></ol></li><li class="chapter-item expanded "><a href="project/use_cases.html"><strong aria-hidden="true">3.</strong> Розроблення функціональних вимог до системи</a></li><li class="chapter-item expanded "><a href="project/design.html"><strong aria-hidden="true">4.</strong> Проєктування інформаційного забезпечення</a></li><li class="chapter-item expanded "><a href="project/software.html"><strong aria-hidden="true">5.</strong> Реалізація інформаційного та програмного забезпечення</a></li><li class="chapter-item expanded "><a href="project/test.html"><strong aria-hidden="true">6.</strong> Тестування працездатності системи</a></li><li class="chapter-item expanded "><a href="project/conclusion.html"><strong aria-hidden="true">7.</strong> Висновки</a></li><li class="chapter-item expanded affix "><li class="part-title">Вказівки до виконання</li><li class="chapter-item expanded "><a href="guidelines/guidelines.html"><strong aria-hidden="true">8.</strong> Методичні вказівки до виконання лабораторних робіт</a></li><li class="chapter-item expanded "><a href="guidelines/themes.html"><strong aria-hidden="true">9.</strong> Теми проєктів</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Курсова робота &quot;Бази данних&quot;. ІМ-34 Система управління проектами</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="Виконали"><a class="header" href="#Виконали">Виконали</a></h1>
+<p><em>студент 2-го курсу, групи ІМ-34</em> <strong>Микола Іглайкін</strong><br />
+Telegram: <a href="https://t.me/niglaykin">@niglaykin</a></p>
+<p><em>студент 2-го курсу, групи ІМ-34</em> <strong>Матвій Шпирук</strong><br />
+Telegram: <a href="https://t.me/pqpj5">@pqpj5</a></p>
+<p><em>студент 2-го курсу, групи ІМ-34</em> <strong>Максим Нетяга</strong><br />
+Telegram: <a href="https://t.me/maxnetyaga">@maxnetyaga</a></p>
+<p><em>студент 2-го курсу, групи ІМ-34</em> <strong>Максим Крулевський</strong><br />
+Telegram: <a href="https://t.me/MaksimkaMalutka">@MaksimkaMalutka</a></p>
+<p><em>студентка 2-го курсу, групи ІМ-34</em> <strong>Карина Корчова</strong><br />
+Telegram: <a href="https://t.me/arosyri">@arosyri</a></p>
+<p><em>студент 2-го курсу, групи ІМ-34</em> <strong>Євген Буткевич</strong><br />
+Telegram: <a href="https://t.me/de_evgenko">@de_evgenko</a></p>
+<h1 id="Керівник"><a class="header" href="#Керівник">Керівник</a></h1>
+<p><em>доцент кафедри ОТ ФІОТ, к.т.н., доцент</em> <strong>Андрій БОЛДАК</strong></p>
+<p><a href="https://kpi.ua/">НТУУ "КИЇВСЬКИЙ ПОЛІТЕХНІЧНИЙ ІНСТИТУТ імені ІГОРЯ СІКОРСЬКОГО</a></p>
+<p><a href="https://fiot.kpi.ua/">Факультет інформатики та обчислювальної техніки</a></p>
+<p><a href="https://comsys.kpi.ua/">Кафедра обчислювальної техніки</a></p>
+<p>Київ</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Вступ"><a class="header" href="#Вступ">Вступ</a></h1>
+<p>У вступі описується мета роботи і розглядається поставлене завдання з позиції її
+актуальності, значення її розв’язання для тієї предметної області, до якої відноситься
+тема бакалаврського проєкту.</p>
+<p>Коротко характеризується сучасний рівень розв’язання
+даного завдання і взаємозв’язок з іншими проєктами по цій тематиці.</p>
+<p>Наводяться
+основні технічні характеристики розробки й очікуваний технічно-економічний ефект
+від її реалізації.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Розроблення-загальних-вимог-до-системи"><a class="header" href="#Розроблення-загальних-вимог-до-системи">Розроблення загальних вимог до системи</a></h1>
+<ul>
+<li><a href="project/./state-of-the-art.html">Аналіз предметної області</a></li>
+<li><a href="project/./stakeholders-needs.html">Запити зацікавлених осіб</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Аналіз-предметної-області"><a class="header" href="#Аналіз-предметної-області">Аналіз предметної області</a></h1>
+<h2 id="Вступ-1"><a class="header" href="#Вступ-1">Вступ</a></h2>
+<p><em>[Вступ повинен містити короткий огляд всього документу.]</em></p>
+<h2 id="Основні-визначення"><a class="header" href="#Основні-визначення">Основні визначення</a></h2>
+<p><em>[Розділ містить визначення термінів та скорочень, які використовуються при аналізі предметної області.]</em></p>
+<h2 id="Підходи-та-способи-вирішення-завдання"><a class="header" href="#Підходи-та-способи-вирішення-завдання">Підходи та способи вирішення завдання</a></h2>
+<p><em>[Розділ містить опис підходів, моделей та способів вирішення завдання.]</em></p>
+<h2 id="Порівняльна-характеристика-існуючих-засобів-вирішення-завдання"><a class="header" href="#Порівняльна-характеристика-існуючих-засобів-вирішення-завдання">Порівняльна характеристика існуючих засобів вирішення завдання</a></h2>
+<p><em>[Розділ містить опис існуючих програм, інформаційних систем, сервісів, тощо, призначених для вирішення
+завдання. Дається порівняльна характеристика властивостей FURPS:</em></p>
+<ul>
+<li><em>Functionality (функциональні вимоги)</em></li>
+<li><em>Usability (вимоги до зручності роботи)</em></li>
+<li><em>Reliability (вимоги до надійності)</em></li>
+<li><em>Performance (вимоги до продуктивності)</em></li>
+<li><em>Supportability (вимоги до підтримки)</em></li>
+</ul>
+<p><em>(у вигляді таблиці).]</em></p>
+<h2 id="Висновки"><a class="header" href="#Висновки">Висновки</a></h2>
+<p><em>[Робляться висновки щодо доцільності розробки нової або модифікації існуючої інформаційної системи, необхідності та способів інтеграції з системами(сервісами) третіх сторін, тощо.]</em></p>
+<h2 id="Посилання"><a class="header" href="#Посилання">Посилання</a></h2>
+<p><em>[Розділ містить повний список всіх документів, про які згадується.]</em></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Запити-зацікавлених-осіб"><a class="header" href="#Запити-зацікавлених-осіб">Запити зацікавлених осіб</a></h1>
+<h2 id="Вступ-2"><a class="header" href="#Вступ-2">Вступ</a></h2>
+<p><em>[Вступ повинен містити короткий огляд всього документу.]</em></p>
+<h3 id="Мета"><a class="header" href="#Мета">Мета</a></h3>
+<p><em>[Визначення мети цієї сукупності вимог. Зазвичай такою метою є створення та впровадження
+інформаційної системи відповідного призначення.]</em></p>
+<h3 id="Контекст"><a class="header" href="#Контекст">Контекст</a></h3>
+<p><em>[Короткий опис того, з якими проектами пов'язаний цей документ, на що він впливає.]</em></p>
+<h3 id="Основні-визначення-та-скорочення"><a class="header" href="#Основні-визначення-та-скорочення">Основні визначення та скорочення</a></h3>
+<p><em>[Розділ містить визначення всіх термінів та скорочень, необхідних для правильного
+тлумачення вимог. Можна зробити посилання на документ, в якому поданий аналіз предметної області.]</em></p>
+<h3 id="Посилання-1"><a class="header" href="#Посилання-1">Посилання</a></h3>
+<p><em>[Розділ містить повний список всіх документів, про які згадується.]</em></p>
+<h2 id="Короткий-зміст"><a class="header" href="#Короткий-зміст">Короткий зміст</a></h2>
+<p><em>[Розділ містить опис того, про що йдеться в еій частині цього документу, що залишилася.
+Також тут описана структура документу.]</em></p>
+<h2 id="Характеристика-ділових-процесів"><a class="header" href="#Характеристика-ділових-процесів">Характеристика ділових процесів</a></h2>
+<p><em>[В цьому розділі визначаються зовнішні фактори, що впливають на бізнес (бізнес-актори),
+та внутрішні фактори (робітники), дається загальна характеристика діяльності бізнес-акторів
+та робітників, яка здійснюється за допомогою бізнесу.</em></p>
+<p><em>Дається опис бізнес-сценаріїв взаємодії бізнес-акторів, робітників і, можливо, інформаційної системи за допомогою наступної
+специфікації:</em></p>
+<p><em><strong>ID:</strong></em></p>
+<p><em><strong>НАЗВА:</strong></em></p>
+<p><em><strong>УЧАСНИКИ:</strong></em></p>
+<p><em><strong>ПЕРЕДУМОВИ:</strong></em></p>
+<p><em><strong>РЕЗУЛЬТАТ:</strong></em></p>
+<p><em><strong>ВИКЛЮЧНІ СИТУАЦІЇ:</strong></em></p>
+<p><em><strong>ОСНОВНИЙ СЦЕНАРІЙ:</strong></em></p>
+<p><em>Кількість сценаріїв визначається у відповідності до специфіки завдання та необхідного
+рівня деталізації (зазвичай, 5-6 сценаріїв).</em></p>
+<h2 id="Короткий-огляд-продукту"><a class="header" href="#Короткий-огляд-продукту">Короткий огляд продукту</a></h2>
+<p><em>[Визначається границя системи та категорії її користувачів. Дається загальна характеристика категорій користувачів
+системи]</em></p>
+<p><em>[Нижче йде опис FURPS:]</em></p>
+<h2 id="Функціональність"><a class="header" href="#Функціональність">Функціональність</a></h2>
+<p><em>[Functionality (функциональні вимоги)]</em></p>
+<h2 id="Практичність"><a class="header" href="#Практичність">Практичність</a></h2>
+<p><em>[Usability (вимоги до зручності роботи)]</em></p>
+<h2 id="Надійність"><a class="header" href="#Надійність">Надійність</a></h2>
+<p><em>[Reliability (вимоги до надійності)]</em></p>
+<h2 id="Продуктивність"><a class="header" href="#Продуктивність">Продуктивність</a></h2>
+<p><em>[Performance (вимоги до продуктивності)]</em></p>
+<h2 id="Експлуатаційна-придатність"><a class="header" href="#Експлуатаційна-придатність">Експлуатаційна придатність</a></h2>
+<p><em>[Supportability (вимоги до підтримки)]</em></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Розроблення-функціональних-вимог-до-системи"><a class="header" href="#Розроблення-функціональних-вимог-до-системи">Розроблення функціональних вимог до системи</a></h1>
+<h2 id="Модель-прецедентів"><a class="header" href="#Модель-прецедентів">Модель прецедентів</a></h2>
+<p>В цьому файлі необхідно перелічити всі документи, розроблені в проекті та дати посилання на них.</p>
+<p><em>Модель прецедентів повинна містити загальні оглядові діаграми та специфікації прецедентів.</em></p>
+<p>Вбудовування зображень діаграм здійснюється з використанням сервісу <a href="https://plantuml.com/">plantuml.com</a>.</p>
+<p>В markdown-файлі використовується опис діаграми</p>
+<pre><code class="language-md">
+&lt;center style="
+    border-radius:4px;
+    border: 1px solid #cfd7e6;
+    box-shadow: 0 1px 3px 0 rgba(89,105,129,.05), 0 1px 1px 0 rgba(0,0,0,.025);
+    padding: 1em;"
+&gt;
+
+@startuml
+
+    right header
+        &lt;font size=24 color=black&gt;Package: &lt;b&gt;UCD_3.0
+    end header
+
+    title
+        &lt;font size=18 color=black&gt;UC_8. Редагувати конфігурацію порталу
+        &lt;font size=16 color=black&gt;Діаграма прецедентів
+    end title
+
+
+    actor "Користувач" as User #eeeeaa
+    
+    package UCD_1{
+        usecase "&lt;b&gt;UC_1&lt;/b&gt;\nПереглянути список \nзвітів" as UC_1 #aaeeaa
+    }
+    
+    usecase "&lt;b&gt;UC_1.1&lt;/b&gt;\nЗастосувати фільтр" as UC_1.1
+    usecase "&lt;b&gt;UC_1.2&lt;/b&gt;\nПереглянути метадані \nзвіту" as UC_1.2  
+    usecase "&lt;b&gt;UC_1.2.1&lt;/b&gt;\nДати оцінку звіту" as UC_1.2.1  
+    usecase "&lt;b&gt;UC_1.2.2&lt;/b&gt;\nПереглянути інформацію \nпро авторів звіту" as UC_1.2.2
+    
+    package UCD_1 {
+        usecase "&lt;b&gt;UC_4&lt;/b&gt;\nВикликати звіт" as UC_4 #aaeeaa
+    }
+    
+    usecase "&lt;b&gt;UC_1.1.1&lt;/b&gt;\n Використати \nпошукові теги" as UC_1.1.1  
+    usecase "&lt;b&gt;UC_1.1.2&lt;/b&gt;\n Використати \nрядок пошуку" as UC_1.1.2
+    usecase "&lt;b&gt;UC_1.1.3&lt;/b&gt;\n Використати \nавторів" as UC_1.1.3  
+    
+    
+    
+    User -&gt; UC_1
+    UC_1.1 .u.&gt; UC_1 :extends
+    UC_1.2 .u.&gt; UC_1 :extends
+    UC_4 .d.&gt; UC_1.2 :extends
+    UC_1.2 .&gt; UC_1.2 :extends
+    UC_1.2.1 .u.&gt; UC_1.2 :extends
+    UC_1.2.2 .u.&gt; UC_1.2 :extends
+    UC_1 ..&gt; UC_1.2.2 :extends
+    
+    
+    UC_1.1.1 -u-|&gt; UC_1.1
+    UC_1.1.2 -u-|&gt; UC_1.1
+    UC_1.1.3 -u-|&gt; UC_1.1
+    
+    right footer
+        Аналітичний портал. Модель прецедентів.
+        НТУУ КПІ ім.І.Сікорського
+        Киів-2020
+    end footer
+
+@enduml
+
+**Діаграма прецедентів**
+
+&lt;/center&gt;
+</code></pre>
+<p>яка буде відображена наступним чином</p>
+<center style="
+    border-radius:4px;
+    border: 1px solid #cfd7e6;
+    box-shadow: 0 1px 3px 0 rgba(89,105,129,.05), 0 1px 1px 0 rgba(0,0,0,.025);
+    padding: 1em;"
+    >
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBjb250ZW50U3R5bGVUeXBlPSJ0ZXh0L2NzcyIgaGVpZ2h0PSI1NTlweCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSIgc3R5bGU9IndpZHRoOjExNjRweDtoZWlnaHQ6NTU5cHg7YmFja2dyb3VuZDojRkZGRkZGOyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMTE2NCA1NTkiIHdpZHRoPSIxMTY0cHgiIHpvb21BbmRQYW49Im1hZ25pZnkiPjx0aXRsZT4mbHQ7Zm9udCBzaXplPTE4IGNvbG9yPWJsYWNrJmd0O1VDXzguICYjMTA1NjsmIzEwNzc7JiMxMDc2OyYjMTA3MjsmIzEwNzU7JiMxMDkxOyYjMTA3NDsmIzEwNzI7JiMxMDkwOyYjMTA4MDsgJiMxMDgyOyYjMTA4NjsmIzEwODU7JiMxMDkyOyYjMTExMDsmIzEwNzU7JiMxMDkxOyYjMTA4ODsmIzEwNzI7JiMxMDk0OyYjMTExMDsmIzExMDI7ICYjMTA4NzsmIzEwODY7JiMxMDg4OyYjMTA5MDsmIzEwNzI7JiMxMDgzOyYjMTA5MTs8L3RpdGxlPjxkZWZzLz48Zz48dGV4dCBmaWxsPSIjMDAwMDAwIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgbGVuZ3RoQWRqdXN0PSJzcGFjaW5nIiB0ZXh0TGVuZ3RoPSIxMDkuMDY2NCIgeD0iOTIyLjExMjkiIHk9IjIyLjI3NzMiPlBhY2thZ2U6PC90ZXh0Pjx0ZXh0IGZpbGw9IiMwMDAwMDAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgbGVuZ3RoQWRqdXN0PSJzcGFjaW5nIiB0ZXh0TGVuZ3RoPSIxMTEuNTM5MSIgeD0iMTAzOC44MDgyIiB5PSIyMi4yNzczIj5VQ0RfMy4wPC90ZXh0Pjx0ZXh0IGZpbGw9IiMwMDAwMDAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmb250LXdlaWdodD0iYm9sZCIgbGVuZ3RoQWRqdXN0PSJzcGFjaW5nIiB0ZXh0TGVuZ3RoPSI0MjQuMjA0MSIgeD0iMzYzLjA3MTYiIHk9IjU1LjY0NTUiPlVDXzguICYjMTA1NjsmIzEwNzc7JiMxMDc2OyYjMTA3MjsmIzEwNzU7JiMxMDkxOyYjMTA3NDsmIzEwNzI7JiMxMDkwOyYjMTA4MDsgJiMxMDgyOyYjMTA4NjsmIzEwODU7JiMxMDkyOyYjMTExMDsmIzEwNzU7JiMxMDkxOyYjMTA4ODsmIzEwNzI7JiMxMDk0OyYjMTExMDsmIzExMDI7ICYjMTA4NzsmIzEwODY7JiMxMDg4OyYjMTA5MDsmIzEwNzI7JiMxMDgzOyYjMTA5MTs8L3RleHQ+PHRleHQgZmlsbD0iIzAwMDAwMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtd2VpZ2h0PSJib2xkIiBsZW5ndGhBZGp1c3Q9InNwYWNpbmciIHRleHRMZW5ndGg9IjIwNi4zNjcyIiB4PSI0NzEuOTkiIHk9Ijc0Ljc0MjIiPiYjMTA0NDsmIzExMTA7JiMxMDcyOyYjMTA3NTsmIzEwODg7JiMxMDcyOyYjMTA4NDsmIzEwNzI7ICYjMTA4NzsmIzEwODg7JiMxMDc3OyYjMTA5NDsmIzEwNzc7JiMxMDc2OyYjMTA3NzsmIzEwODU7JiMxMDkwOyYjMTExMDsmIzEwNzQ7PC90ZXh0PjwhLS1jbHVzdGVyIFVDRF8xLS0+PGcgaWQ9ImNsdXN0ZXJfVUNEXzEiPjxwYXRoIGQ9Ik0xNjIuNjEsOTUuNTE1NiBMMjEzLjYxNDksOTUuNTE1NiBBMy43NSwzLjc1IDAgMCAxIDIxNi4xMTQ5LDk4LjAxNTYgTDIyMy4xMTQ5LDExNy44MTI1IEw2NDguNjEsMTE3LjgxMjUgQTIuNSwyLjUgMCAwIDEgNjUxLjExLDEyMC4zMTI1IEw2NTEuMTEsMjE5LjE2NTYgQTIuNSwyLjUgMCAwIDEgNjQ4LjYxLDIyMS42NjU2IEwxNjIuNjEsMjIxLjY2NTYgQTIuNSwyLjUgMCAwIDEgMTYwLjExLDIxOS4xNjU2IEwxNjAuMTEsOTguMDE1NiBBMi41LDIuNSAwIDAgMSAxNjIuNjEsOTUuNTE1NiAiIGZpbGw9Im5vbmUiIHN0eWxlPSJzdHJva2U6IzAwMDAwMDtzdHJva2Utd2lkdGg6MS41OyIvPjxsaW5lIHN0eWxlPSJzdHJva2U6IzAwMDAwMDtzdHJva2Utd2lkdGg6MS41OyIgeDE9IjE2MC4xMSIgeDI9IjIyMy4xMTQ5IiB5MT0iMTE3LjgxMjUiIHkyPSIxMTcuODEyNSIvPjx0ZXh0IGZpbGw9IiMwMDAwMDAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgbGVuZ3RoQWRqdXN0PSJzcGFjaW5nIiB0ZXh0TGVuZ3RoPSI1MC4wMDQ5IiB4PSIxNjQuMTEiIHk9IjExMC41MTA3Ij5VQ0RfMTwvdGV4dD48L2c+PGcgaWQ9ImVsZW1fVUNfMSI+PGVsbGlwc2UgY3g9IjUxMy4xMTAyIiBjeT0iMTY4LjA5NjUiIGZpbGw9IiNBQUVFQUEiIHJ4PSIxMjEuNTMwMiIgcnk9IjM3LjU3MDkiIHN0eWxlPSJzdHJva2U6IzE4MTgxODtzdHJva2Utd2lkdGg6MC41OyIvPjx0ZXh0IGZpbGw9IiMwMDAwMDAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgbGVuZ3RoQWRqdXN0PSJzcGFjaW5nIiB0ZXh0TGVuZ3RoPSIzOC4zODM4IiB4PSI0OTMuOTE4MyIgeT0iMTU0LjY0NjMiPlVDXzE8L3RleHQ+PHRleHQgZmlsbD0iIzAwMDAwMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGxlbmd0aEFkanVzdD0ic3BhY2luZyIgdGV4dExlbmd0aD0iMTUxLjE3NjgiIHg9IjQzNS4yOTY3IiB5PSIxNzAuOTQzMiI+JiMxMDU1OyYjMTA3NzsmIzEwODg7JiMxMDc3OyYjMTA3NTsmIzEwODM7JiMxMTAzOyYjMTA4NTsmIzEwOTE7JiMxMDkwOyYjMTA4MDsgJiMxMDg5OyYjMTA4NzsmIzEwODA7JiMxMDg5OyYjMTA4NjsmIzEwODI7PC90ZXh0Pjx0ZXh0IGZpbGw9IiMwMDAwMDAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBsZW5ndGhBZGp1c3Q9InNwYWNpbmciIHRleHRMZW5ndGg9IjM5Ljg4MDkiIHg9IjQ5My4xNjk3IiB5PSIxODcuMjQwMSI+JiMxMDc5OyYjMTA3NDsmIzExMTA7JiMxMDkwOyYjMTExMDsmIzEwNzQ7PC90ZXh0PjwvZz48ZyBpZD0iZWxlbV9VQ180Ij48ZWxsaXBzZSBjeD0iMjY2LjEwODkiIGN5PSIxNjguMDkyOSIgZmlsbD0iI0FBRUVBQSIgcng9IjkwLjQ1ODkiIHJ5PSIyNi4wNDczIiBzdHlsZT0ic3Ryb2tlOiMxODE4MTg7c3Ryb2tlLXdpZHRoOjAuNTsiLz48dGV4dCBmaWxsPSIjMDAwMDAwIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGxlbmd0aEFkanVzdD0ic3BhY2luZyIgdGV4dExlbmd0aD0iMzguMzgzOCIgeD0iMjQ2LjkxNyIgeT0iMTYyLjc5MTEiPlVDXzQ8L3RleHQ+PHRleHQgZmlsbD0iIzAwMDAwMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGxlbmd0aEFkanVzdD0ic3BhY2luZyIgdGV4dExlbmd0aD0iMTExLjY4NTUiIHg9IjIxMC4yNjYxIiB5PSIxNzkuMDg4Ij4mIzEwNDI7JiMxMDgwOyYjMTA4MjsmIzEwODM7JiMxMDgwOyYjMTA4MjsmIzEwNzI7JiMxMDkwOyYjMTA4MDsgJiMxMDc5OyYjMTA3NDsmIzExMTA7JiMxMDkwOzwvdGV4dD48L2c+PCEtLWVudGl0eSBVc2VyLS0+PGcgaWQ9ImVsZW1fVXNlciI+PGVsbGlwc2UgY3g9IjcxMi4xMDQ3IiBjeT0iMTM4LjQ0NTYiIGZpbGw9IiNFRUVFQUEiIHJ4PSI4IiByeT0iOCIgc3R5bGU9InN0cm9rZTojMTgxODE4O3N0cm9rZS13aWR0aDowLjU7Ii8+PHBhdGggZD0iTTcxMi4xMDQ3LDE0Ni40NDU2IEw3MTIuMTA0NywxNzMuNDQ1NiBNNjk5LjEwNDcsMTU0LjQ0NTYgTDcyNS4xMDQ3LDE1NC40NDU2IE03MTIuMTA0NywxNzMuNDQ1NiBMNjk5LjEwNDcsMTg4LjQ0NTYgTTcxMi4xMDQ3LDE3My40NDU2IEw3MjUuMTA0NywxODguNDQ1NiAiIGZpbGw9Im5vbmUiIHN0eWxlPSJzdHJva2U6IzE4MTgxODtzdHJva2Utd2lkdGg6MC41OyIvPjx0ZXh0IGZpbGw9IiMwMDAwMDAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBsZW5ndGhBZGp1c3Q9InNwYWNpbmciIHRleHRMZW5ndGg9Ijg1LjcyOTUiIHg9IjY2OS4yNCIgeT0iMjAyLjk0MDciPiYjMTA1MDsmIzEwODY7JiMxMDg4OyYjMTA4MDsmIzEwODk7JiMxMDkwOyYjMTA5MTsmIzEwNzQ7JiMxMDcyOyYjMTA5NTs8L3RleHQ+PC9nPjxnIGlkPSJlbGVtX1VDXzEuMSI+PGVsbGlwc2UgY3g9IjgwMi4xMSIgY3k9IjMyMi4yMzI5IiBmaWxsPSIjRjFGMUYxIiByeD0iMTE1LjE0IiByeT0iMjYuMDQ3MyIgc3R5bGU9InN0cm9rZTojMTgxODE4O3N0cm9rZS13aWR0aDowLjU7Ii8+PHRleHQgZmlsbD0iIzAwMDAwMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBsZW5ndGhBZGp1c3Q9InNwYWNpbmciIHRleHRMZW5ndGg9IjUzLjQ0MzQiIHg9Ijc3NS4zODgzIiB5PSIzMTYuOTMxMSI+VUNfMS4xPC90ZXh0Pjx0ZXh0IGZpbGw9IiMwMDAwMDAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBsZW5ndGhBZGp1c3Q9InNwYWNpbmciIHRleHRMZW5ndGg9IjE0Ni41ODk4IiB4PSI3MjguODE1IiB5PSIzMzMuMjI4Ij4mIzEwNDc7JiMxMDcyOyYjMTA4OTsmIzEwOTA7JiMxMDg2OyYjMTA4OTsmIzEwOTE7JiMxMDc0OyYjMTA3MjsmIzEwOTA7JiMxMDgwOyAmIzEwOTI7JiMxMTEwOyYjMTA4MzsmIzExMDA7JiMxMDkwOyYjMTA4ODs8L3RleHQ+PC9nPjxnIGlkPSJlbGVtX1VDXzEuMiI+PGVsbGlwc2UgY3g9IjI0Ny4xMDc4IiBjeT0iMzIyLjIzNjUiIGZpbGw9IiNGMUYxRjEiIHJ4PSIxMzMuMjI3OCIgcnk9IjM3LjU3MDkiIHN0eWxlPSJzdHJva2U6IzE4MTgxODtzdHJva2Utd2lkdGg6MC41OyIvPjx0ZXh0IGZpbGw9IiMwMDAwMDAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgbGVuZ3RoQWRqdXN0PSJzcGFjaW5nIiB0ZXh0TGVuZ3RoPSI1My40NDM0IiB4PSIyMjAuMzg2MSIgeT0iMzA4Ljc4NjMiPlVDXzEuMjwvdGV4dD48dGV4dCBmaWxsPSIjMDAwMDAwIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgbGVuZ3RoQWRqdXN0PSJzcGFjaW5nIiB0ZXh0TGVuZ3RoPSIxNjcuNzE5NyIgeD0iMTYxLjAyMjgiIHk9IjMyNS4wODMyIj4mIzEwNTU7JiMxMDc3OyYjMTA4ODsmIzEwNzc7JiMxMDc1OyYjMTA4MzsmIzExMDM7JiMxMDg1OyYjMTA5MTsmIzEwOTA7JiMxMDgwOyAmIzEwODQ7JiMxMDc3OyYjMTA5MDsmIzEwNzI7JiMxMDc2OyYjMTA3MjsmIzEwODU7JiMxMTEwOzwvdGV4dD48dGV4dCBmaWxsPSIjMDAwMDAwIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgbGVuZ3RoQWRqdXN0PSJzcGFjaW5nIiB0ZXh0TGVuZ3RoPSIzNi4wMjU0IiB4PSIyMjkuMDk1MSIgeT0iMzQxLjM4MDEiPiYjMTA3OTsmIzEwNzQ7JiMxMTEwOyYjMTA5MDsmIzEwOTE7PC90ZXh0PjwvZz48ZyBpZD0iZWxlbV9VQ18xLjIuMSI+PGVsbGlwc2UgY3g9IjEwOS4xMDg4IiBjeT0iNDc0LjM3MjkiIGZpbGw9IiNGMUYxRjEiIHJ4PSIxMDMuMTA4OCIgcnk9IjI2LjA0NzMiIHN0eWxlPSJzdHJva2U6IzE4MTgxODtzdHJva2Utd2lkdGg6MC41OyIvPjx0ZXh0IGZpbGw9IiMwMDAwMDAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgbGVuZ3RoQWRqdXN0PSJzcGFjaW5nIiB0ZXh0TGVuZ3RoPSI2OC41MDI5IiB4PSI3NC44NTczIiB5PSI0NjkuMDcxMSI+VUNfMS4yLjE8L3RleHQ+PHRleHQgZmlsbD0iIzAwMDAwMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGxlbmd0aEFkanVzdD0ic3BhY2luZyIgdGV4dExlbmd0aD0iMTI5LjU3NTIiIHg9IjQ0LjMyMTIiIHk9IjQ4NS4zNjgiPiYjMTA0NDsmIzEwNzI7JiMxMDkwOyYjMTA4MDsgJiMxMDg2OyYjMTA5NDsmIzExMTA7JiMxMDg1OyYjMTA4MjsmIzEwOTE7ICYjMTA3OTsmIzEwNzQ7JiMxMTEwOyYjMTA5MDsmIzEwOTE7PC90ZXh0PjwvZz48ZyBpZD0iZWxlbV9VQ18xLjIuMiI+PGVsbGlwc2UgY3g9IjM5NC4xMDYxIiBjeT0iNDc0LjM3NjUiIGZpbGw9IiNGMUYxRjEiIHJ4PSIxNDcuMDg2MSIgcnk9IjM3LjU3MDkiIHN0eWxlPSJzdHJva2U6IzE4MTgxODtzdHJva2Utd2lkdGg6MC41OyIvPjx0ZXh0IGZpbGw9IiMwMDAwMDAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgbGVuZ3RoQWRqdXN0PSJzcGFjaW5nIiB0ZXh0TGVuZ3RoPSI2OC41MDI5IiB4PSIzNTkuODU0NyIgeT0iNDYwLjkyNjMiPlVDXzEuMi4yPC90ZXh0Pjx0ZXh0IGZpbGw9IiMwMDAwMDAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBsZW5ndGhBZGp1c3Q9InNwYWNpbmciIHRleHRMZW5ndGg9IjE4Ny4zMTg0IiB4PSIyOTguMjIxOCIgeT0iNDc3LjIyMzIiPiYjMTA1NTsmIzEwNzc7JiMxMDg4OyYjMTA3NzsmIzEwNzU7JiMxMDgzOyYjMTEwMzsmIzEwODU7JiMxMDkxOyYjMTA5MDsmIzEwODA7ICYjMTExMDsmIzEwODU7JiMxMDkyOyYjMTA4NjsmIzEwODg7JiMxMDg0OyYjMTA3MjsmIzEwOTQ7JiMxMTEwOyYjMTEwMjs8L3RleHQ+PHRleHQgZmlsbD0iIzAwMDAwMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGxlbmd0aEFkanVzdD0ic3BhY2luZyIgdGV4dExlbmd0aD0iMTI2LjEwOTQiIHg9IjMzMS4wNTE0IiB5PSI0OTMuNTIwMSI+JiMxMDg3OyYjMTA4ODsmIzEwODY7ICYjMTA3MjsmIzEwNzQ7JiMxMDkwOyYjMTA4NjsmIzEwODg7JiMxMTEwOyYjMTA3NDsgJiMxMDc5OyYjMTA3NDsmIzExMTA7JiMxMDkwOyYjMTA5MTs8L3RleHQ+PC9nPjxnIGlkPSJlbGVtX1VDXzEuMS4xIj48ZWxsaXBzZSBjeD0iNjYyLjExMDciIGN5PSI0NzQuMzc2NSIgZmlsbD0iI0YxRjFGMSIgcng9Ijg2LjE5MDciIHJ5PSIzNy41NzA5IiBzdHlsZT0ic3Ryb2tlOiMxODE4MTg7c3Ryb2tlLXdpZHRoOjAuNTsiLz48dGV4dCBmaWxsPSIjMDAwMDAwIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGxlbmd0aEFkanVzdD0ic3BhY2luZyIgdGV4dExlbmd0aD0iNjguNTAyOSIgeD0iNjI3Ljg1OTIiIHk9IjQ2MC45MjYzIj5VQ18xLjEuMTwvdGV4dD48dGV4dCBmaWxsPSIjMDAwMDAwIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgbGVuZ3RoQWRqdXN0PSJzcGFjaW5nIiB0ZXh0TGVuZ3RoPSI5NS4zOTU1IiB4PSI2MTQuNDEyOSIgeT0iNDc3LjIyMzIiPiYjMTA0MjsmIzEwODA7JiMxMDgyOyYjMTA4NjsmIzEwODg7JiMxMDgwOyYjMTA4OTsmIzEwOTA7JiMxMDcyOyYjMTA5MDsmIzEwODA7PC90ZXh0Pjx0ZXh0IGZpbGw9IiMwMDAwMDAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBsZW5ndGhBZGp1c3Q9InNwYWNpbmciIHRleHRMZW5ndGg9IjEwNS42NDk0IiB4PSI2MDkuMjg2IiB5PSI0OTMuNTIwMSI+JiMxMDg3OyYjMTA4NjsmIzEwOTY7JiMxMDkxOyYjMTA4MjsmIzEwODY7JiMxMDc0OyYjMTExMDsgJiMxMDkwOyYjMTA3NzsmIzEwNzU7JiMxMDgwOzwvdGV4dD48L2c+PGcgaWQ9ImVsZW1fVUNfMS4xLjIiPjxlbGxpcHNlIGN4PSI4NjguMTEzNiIgY3k9IjQ3NC4zNzY1IiBmaWxsPSIjRjFGMUYxIiByeD0iODUuMjMzNiIgcnk9IjM3LjU3MDkiIHN0eWxlPSJzdHJva2U6IzE4MTgxODtzdHJva2Utd2lkdGg6MC41OyIvPjx0ZXh0IGZpbGw9IiMwMDAwMDAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgbGVuZ3RoQWRqdXN0PSJzcGFjaW5nIiB0ZXh0TGVuZ3RoPSI2OC41MDI5IiB4PSI4MzMuODYyMiIgeT0iNDYwLjkyNjMiPlVDXzEuMS4yPC90ZXh0Pjx0ZXh0IGZpbGw9IiMwMDAwMDAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBsZW5ndGhBZGp1c3Q9InNwYWNpbmciIHRleHRMZW5ndGg9Ijk1LjM5NTUiIHg9IjgyMC40MTU5IiB5PSI0NzcuMjIzMiI+JiMxMDQyOyYjMTA4MDsmIzEwODI7JiMxMDg2OyYjMTA4ODsmIzEwODA7JiMxMDg5OyYjMTA5MDsmIzEwNzI7JiMxMDkwOyYjMTA4MDs8L3RleHQ+PHRleHQgZmlsbD0iIzAwMDAwMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGxlbmd0aEFkanVzdD0ic3BhY2luZyIgdGV4dExlbmd0aD0iMTA0LjAxNTYiIHg9IjgxNi4xMDU4IiB5PSI0OTMuNTIwMSI+JiMxMDg4OyYjMTEwMzsmIzEwNzY7JiMxMDg2OyYjMTA4MjsgJiMxMDg3OyYjMTA4NjsmIzEwOTY7JiMxMDkxOyYjMTA4MjsmIzEwOTE7PC90ZXh0PjwvZz48ZyBpZD0iZWxlbV9VQ18xLjEuMyI+PGVsbGlwc2UgY3g9IjEwNzMuMTEzNiIgY3k9IjQ3NC4zNzY1IiBmaWxsPSIjRjFGMUYxIiByeD0iODUuMjMzNiIgcnk9IjM3LjU3MDkiIHN0eWxlPSJzdHJva2U6IzE4MTgxODtzdHJva2Utd2lkdGg6MC41OyIvPjx0ZXh0IGZpbGw9IiMwMDAwMDAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgbGVuZ3RoQWRqdXN0PSJzcGFjaW5nIiB0ZXh0TGVuZ3RoPSI2OC41MDI5IiB4PSIxMDM4Ljg2MjIiIHk9IjQ2MC45MjYzIj5VQ18xLjEuMzwvdGV4dD48dGV4dCBmaWxsPSIjMDAwMDAwIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgbGVuZ3RoQWRqdXN0PSJzcGFjaW5nIiB0ZXh0TGVuZ3RoPSI5NS4zOTU1IiB4PSIxMDI1LjQxNTkiIHk9IjQ3Ny4yMjMyIj4mIzEwNDI7JiMxMDgwOyYjMTA4MjsmIzEwODY7JiMxMDg4OyYjMTA4MDsmIzEwODk7JiMxMDkwOyYjMTA3MjsmIzEwOTA7JiMxMDgwOzwvdGV4dD48dGV4dCBmaWxsPSIjMDAwMDAwIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgbGVuZ3RoQWRqdXN0PSJzcGFjaW5nIiB0ZXh0TGVuZ3RoPSI1NC41NzgxIiB4PSIxMDQ1LjgyNDYiIHk9IjQ5My41MjAxIj4mIzEwNzI7JiMxMDc0OyYjMTA5MDsmIzEwODY7JiMxMDg4OyYjMTExMDsmIzEwNzQ7PC90ZXh0PjwvZz48IS0tbGluayBVc2VyIHRvIFVDXzEtLT48ZyBpZD0ibGlua19Vc2VyX1VDXzEiPjxwYXRoIGQ9Ik02NjguOSwxNjguMDk1NiBDNjU3LjUyLDE2OC4wOTU2IDY1Mi4xNCwxNjguMDk1NiA2NDAuNzYsMTY4LjA5NTYgIiBmaWxsPSJub25lIiBpZD0iVXNlci10by1VQ18xIiBzdHlsZT0ic3Ryb2tlOiMxODE4MTg7c3Ryb2tlLXdpZHRoOjEuMDsiLz48cG9seWdvbiBmaWxsPSIjMTgxODE4IiBwb2ludHM9IjYzNC43NiwxNjguMDk1Niw2NDMuNzYsMTcyLjA5NTYsNjM5Ljc2LDE2OC4wOTU2LDY0My43NiwxNjQuMDk1Niw2MzQuNzYsMTY4LjA5NTYiIHN0eWxlPSJzdHJva2U6IzE4MTgxODtzdHJva2Utd2lkdGg6MS4wOyIvPjwvZz48IS0tcmV2ZXJzZSBsaW5rIFVDXzEgdG8gVUNfMS4xLS0+PGcgaWQ9ImxpbmtfVUNfMV9VQ18xLjEiPjxwYXRoIGQ9Ik01NzguOTk5MiwyMDMuNzgwOCBDNjMzLjk0OTIsMjMyLjcxMDggNzA4LjM3LDI3MS44ODU2IDc1Ny42NCwyOTcuODI1NiAiIGZpbGw9Im5vbmUiIGlkPSJVQ18xLWJhY2t0by1VQ18xLjEiIHN0eWxlPSJzdHJva2U6IzE4MTgxODtzdHJva2Utd2lkdGg6MS4wO3N0cm9rZS1kYXNoYXJyYXk6Ny4wLDcuMDsiLz48cG9seWdvbiBmaWxsPSIjMTgxODE4IiBwb2ludHM9IjU3My42OSwyMDAuOTg1Niw1NzkuNzkwMywyMDguNzE3OCw1NzguMTE0MywyMDMuMzE0OSw1ODMuNTE3MiwyMDEuNjM4OSw1NzMuNjksMjAwLjk4NTYiIHN0eWxlPSJzdHJva2U6IzE4MTgxODtzdHJva2Utd2lkdGg6MS4wOyIvPjx0ZXh0IGZpbGw9IiMwMDAwMDAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBsZW5ndGhBZGp1c3Q9InNwYWNpbmciIHRleHRMZW5ndGg9IjUyLjA1MDgiIHg9IjY3NS4xMSIgeT0iMjUwLjczMjUiPmV4dGVuZHM8L3RleHQ+PC9nPjwhLS1yZXZlcnNlIGxpbmsgVUNfMSB0byBVQ18xLjItLT48ZyBpZD0ibGlua19VQ18xX1VDXzEuMiI+PHBhdGggZD0iTTQ1MC44NDE4LDIwNC43MDQ3IEM0MDYuMjYxOCwyMzAuMjA0NyAzNDkuNzgsMjYyLjUwNTYgMzA1LDI4OC4xMjU2ICIgZmlsbD0ibm9uZSIgaWQ9IlVDXzEtYmFja3RvLVVDXzEuMiIgc3R5bGU9InN0cm9rZTojMTgxODE4O3N0cm9rZS13aWR0aDoxLjA7c3Ryb2tlLWRhc2hhcnJheTo3LjAsNy4wOyIvPjxwb2x5Z29uIGZpbGw9IiMxODE4MTgiIHBvaW50cz0iNDU2LjA1LDIwMS43MjU2LDQ0Ni4yNTE3LDIwMi43MjIyLDQ1MS43MDk5LDIwNC4yMDgyLDQ1MC4yMjM4LDIwOS42NjY0LDQ1Ni4wNSwyMDEuNzI1NiIgc3R5bGU9InN0cm9rZTojMTgxODE4O3N0cm9rZS13aWR0aDoxLjA7Ii8+PHRleHQgZmlsbD0iIzAwMDAwMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGxlbmd0aEFkanVzdD0ic3BhY2luZyIgdGV4dExlbmd0aD0iNTIuMDUwOCIgeD0iMzg4LjExIiB5PSIyNTAuNzMyNSI+ZXh0ZW5kczwvdGV4dD48L2c+PCEtLWxpbmsgVUNfNCB0byBVQ18xLjItLT48ZyBpZD0ibGlua19VQ180X1VDXzEuMiI+PHBhdGggZD0iTTI2Mi45MywxOTQuNTU1NiBDMjU5Ljg3LDIxOS4wODU2IDI1NS45NDUsMjUwLjUxMjEgMjUyLjQ2NSwyNzguMzIyMSAiIGZpbGw9Im5vbmUiIGlkPSJVQ180LXRvLVVDXzEuMiIgc3R5bGU9InN0cm9rZTojMTgxODE4O3N0cm9rZS13aWR0aDoxLjA7c3Ryb2tlLWRhc2hhcnJheTo3LjAsNy4wOyIvPjxwb2x5Z29uIGZpbGw9IiMxODE4MTgiIHBvaW50cz0iMjUxLjcyLDI4NC4yNzU2LDI1Ni44MDY1LDI3NS44NDE5LDI1Mi4zNDA4LDI3OS4zMTQzLDI0OC44Njg1LDI3NC44NDg2LDI1MS43MiwyODQuMjc1NiIgc3R5bGU9InN0cm9rZTojMTgxODE4O3N0cm9rZS13aWR0aDoxLjA7Ii8+PHRleHQgZmlsbD0iIzAwMDAwMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGxlbmd0aEFkanVzdD0ic3BhY2luZyIgdGV4dExlbmd0aD0iNTIuMDUwOCIgeD0iMjU5LjExIiB5PSIyNTAuNzMyNSI+ZXh0ZW5kczwvdGV4dD48L2c+PCEtLWxpbmsgVUNfMS4yIHRvIFVDXzEuMi0tPjxnIGlkPSJsaW5rX1VDXzEuMl9VQ18xLjIiPjxwYXRoIGQ9Ik0zNzEuODMsMzA4LjUxNTYgQzM5Ny4xOCwzMTAuMDA1NiA0MTUuMzQsMzE0LjU4NTYgNDE1LjM0LDMyMi4yMzU2IEM0MTUuMzQsMzI5Ljg4NTYgNDAzLjE2OTUsMzM0LjEwMTIgMzc3LjgxOTUsMzM1LjYwMTIgIiBmaWxsPSJub25lIiBpZD0iVUNfMS4yLXRvLVVDXzEuMiIgc3R5bGU9InN0cm9rZTojMTgxODE4O3N0cm9rZS13aWR0aDoxLjA7c3Ryb2tlLWRhc2hhcnJheTo3LjAsNy4wOyIvPjxwb2x5Z29uIGZpbGw9IiMxODE4MTgiIHBvaW50cz0iMzcxLjgzLDMzNS45NTU2LDM4MS4wNTA2LDMzOS40MTcsMzc2LjgyMTMsMzM1LjY2MDMsMzgwLjU3OCwzMzEuNDMxLDM3MS44MywzMzUuOTU1NiIgc3R5bGU9InN0cm9rZTojMTgxODE4O3N0cm9rZS13aWR0aDoxLjA7Ii8+PHRleHQgZmlsbD0iIzAwMDAwMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGxlbmd0aEFkanVzdD0ic3BhY2luZyIgdGV4dExlbmd0aD0iNTIuMDUwOCIgeD0iNDIxLjM0IiB5PSIzMjYuODAyNSI+ZXh0ZW5kczwvdGV4dD48L2c+PCEtLXJldmVyc2UgbGluayBVQ18xLjIgdG8gVUNfMS4yLjEtLT48ZyBpZD0ibGlua19VQ18xLjJfVUNfMS4yLjEiPjxwYXRoIGQ9Ik0yMTAuMzQwMiwzNjMuMjMzNiBDMTg0Ljg0MDIsMzkwLjk4MzYgMTU0LjE0LDQyNC4zNzU2IDEzMS42Nyw0NDguODM1NiAiIGZpbGw9Im5vbmUiIGlkPSJVQ18xLjItYmFja3RvLVVDXzEuMi4xIiBzdHlsZT0ic3Ryb2tlOiMxODE4MTg7c3Ryb2tlLXdpZHRoOjEuMDtzdHJva2UtZGFzaGFycmF5OjcuMCw3LjA7Ii8+PHBvbHlnb24gZmlsbD0iIzE4MTgxOCIgcG9pbnRzPSIyMTQuNCwzNTguODE1NiwyMDUuMzY1MSwzNjIuNzM2MSwyMTEuMDE2OSwzNjIuNDk3MywyMTEuMjU1NywzNjguMTQ5MSwyMTQuNCwzNTguODE1NiIgc3R5bGU9InN0cm9rZTojMTgxODE4O3N0cm9rZS13aWR0aDoxLjA7Ii8+PHRleHQgZmlsbD0iIzAwMDAwMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGxlbmd0aEFkanVzdD0ic3BhY2luZyIgdGV4dExlbmd0aD0iNTIuMDUwOCIgeD0iMTg0LjExIiB5PSI0MDIuODcyNSI+ZXh0ZW5kczwvdGV4dD48L2c+PCEtLXJldmVyc2UgbGluayBVQ18xLjIgdG8gVUNfMS4yLjItLT48ZyBpZD0ibGlua19VQ18xLjJfVUNfMS4yLjIiPjxwYXRoIGQ9Ik0yODYuMTQ3MywzNjMuMTAzMSBDMzA5LjQwNzMsMzg2Ljg2MzEgMzM1LjcsNDEzLjcxNTYgMzU5LjAxLDQzNy41MjU2ICIgZmlsbD0ibm9uZSIgaWQ9IlVDXzEuMi1iYWNrdG8tVUNfMS4yLjIiIHN0eWxlPSJzdHJva2U6IzE4MTgxODtzdHJva2Utd2lkdGg6MS4wO3N0cm9rZS1kYXNoYXJyYXk6Ny4wLDcuMDsiLz48cG9seWdvbiBmaWxsPSIjMTgxODE4IiBwb2ludHM9IjI4MS45NSwzNTguODE1NiwyODUuMzg3NiwzNjguMDQ1MSwyODUuNDQ3NywzNjIuMzg4NiwyOTEuMTA0MywzNjIuNDQ4NywyODEuOTUsMzU4LjgxNTYiIHN0eWxlPSJzdHJva2U6IzE4MTgxODtzdHJva2Utd2lkdGg6MS4wOyIvPjx0ZXh0IGZpbGw9IiMwMDAwMDAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBsZW5ndGhBZGp1c3Q9InNwYWNpbmciIHRleHRMZW5ndGg9IjUyLjA1MDgiIHg9IjMyNS4xMSIgeT0iNDAyLjg3MjUiPmV4dGVuZHM8L3RleHQ+PC9nPjwhLS1saW5rIFVDXzEgdG8gVUNfMS4yLjItLT48ZyBpZD0ibGlua19VQ18xX1VDXzEuMi4yIj48cGF0aCBkPSJNNTExLjg3LDIwNi4wNTU2IEM1MDkuMzksMjQ1LjU5NTYgNTAxLjk5LDMwOS40MTU2IDQ4MC4xMSwzNTkuODA1NiBDNDY3LjY5LDM4OC4zODU2IDQ1MC41OTE0LDQxMS44MDQ0IDQzMi40MzE0LDQzMi44MzQ0ICIgZmlsbD0ibm9uZSIgaWQ9IlVDXzEtdG8tVUNfMS4yLjIiIHN0eWxlPSJzdHJva2U6IzE4MTgxODtzdHJva2Utd2lkdGg6MS4wO3N0cm9rZS1kYXNoYXJyYXk6Ny4wLDcuMDsiLz48cG9seWdvbiBmaWxsPSIjMTgxODE4IiBwb2ludHM9IjQyOC41MSw0MzcuMzc1Niw0MzcuNDE5Niw0MzMuMTc4MSw0MzEuNzc3OSw0MzMuNTkxMyw0MzEuMzY0Nyw0MjcuOTQ5Niw0MjguNTEsNDM3LjM3NTYiIHN0eWxlPSJzdHJva2U6IzE4MTgxODtzdHJva2Utd2lkdGg6MS4wOyIvPjx0ZXh0IGZpbGw9IiMwMDAwMDAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBsZW5ndGhBZGp1c3Q9InNwYWNpbmciIHRleHRMZW5ndGg9IjUyLjA1MDgiIHg9IjUwMi4xMSIgeT0iMzI2LjgwMjUiPmV4dGVuZHM8L3RleHQ+PC9nPjwhLS1yZXZlcnNlIGxpbmsgVUNfMS4xIHRvIFVDXzEuMS4xLS0+PGcgaWQ9ImxpbmtfVUNfMS4xX1VDXzEuMS4xIj48cGF0aCBkPSJNNzY2LjcxMzksMzYxLjE4OTkgQzc0My40OTM5LDM4Ni4wODk5IDcxOS44MSw0MTEuNDk1NiA2OTMuOTEsNDM5LjI3NTYgIiBmaWxsPSJub25lIiBpZD0iVUNfMS4xLWJhY2t0by1VQ18xLjEuMSIgc3R5bGU9InN0cm9rZTojMTgxODE4O3N0cm9rZS13aWR0aDoxLjA7Ii8+PHBvbHlnb24gZmlsbD0ibm9uZSIgcG9pbnRzPSI3NzguOTksMzQ4LjAyNTYsNzYyLjMyNTgsMzU3LjA5NzksNzcxLjEwMiwzNjUuMjgxOSw3NzguOTksMzQ4LjAyNTYiIHN0eWxlPSJzdHJva2U6IzE4MTgxODtzdHJva2Utd2lkdGg6MS4wOyIvPjwvZz48IS0tcmV2ZXJzZSBsaW5rIFVDXzEuMSB0byBVQ18xLjEuMi0tPjxnIGlkPSJsaW5rX1VDXzEuMV9VQ18xLjEuMiI+PHBhdGggZD0iTTgyMC4zOTkzLDM2NC44NDU3IEM4MzEuMDY5MywzODkuMTM1NyA4NDAuMTMsNDA5LjcxNTYgODUyLjIsNDM3LjE4NTYgIiBmaWxsPSJub25lIiBpZD0iVUNfMS4xLWJhY2t0by1VQ18xLjEuMiIgc3R5bGU9InN0cm9rZTojMTgxODE4O3N0cm9rZS13aWR0aDoxLjA7Ii8+PHBvbHlnb24gZmlsbD0ibm9uZSIgcG9pbnRzPSI4MTMuMTYsMzQ4LjM2NTYsODE0LjkwNTksMzY3LjI1ODgsODI1Ljg5MjYsMzYyLjQzMjYsODEzLjE2LDM0OC4zNjU2IiBzdHlsZT0ic3Ryb2tlOiMxODE4MTg7c3Ryb2tlLXdpZHRoOjEuMDsiLz48L2c+PCEtLXJldmVyc2UgbGluayBVQ18xLjEgdG8gVUNfMS4xLjMtLT48ZyBpZD0ibGlua19VQ18xLjFfVUNfMS4xLjMiPjxwYXRoIGQ9Ik04NjAuNDk0NiwzNTUuNTc5NSBDOTA4LjE5NDYsMzgyLjAwOTUgOTY5LjczLDQxNi4wOTU2IDEwMjAuOTgsNDQ0LjQ5NTYgIiBmaWxsPSJub25lIiBpZD0iVUNfMS4xLWJhY2t0by1VQ18xLjEuMyIgc3R5bGU9InN0cm9rZTojMTgxODE4O3N0cm9rZS13aWR0aDoxLjA7Ii8+PHBvbHlnb24gZmlsbD0ibm9uZSIgcG9pbnRzPSI4NDQuNzUsMzQ2Ljg1NTYsODU3LjU4NjcsMzYwLjgyNzcsODYzLjQwMjYsMzUwLjMzMTMsODQ0Ljc1LDM0Ni44NTU2IiBzdHlsZT0ic3Ryb2tlOiMxODE4MTg7c3Ryb2tlLXdpZHRoOjEuMDsiLz48L2c+PHRleHQgZmlsbD0iIzg4ODg4OCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTAiIGxlbmd0aEFkanVzdD0ic3BhY2luZyIgdGV4dExlbmd0aD0iMjI1Ljg4MzgiIHg9IjkyNC40NjM0IiB5PSI1MjYuMjI5NiI+JiMxMDQwOyYjMTA4NTsmIzEwNzI7JiMxMDgzOyYjMTExMDsmIzEwOTA7JiMxMDgwOyYjMTA5NTsmIzEwODU7JiMxMDgwOyYjMTA4MTsgJiMxMDg3OyYjMTA4NjsmIzEwODg7JiMxMDkwOyYjMTA3MjsmIzEwODM7LiAmIzEwNTI7JiMxMDg2OyYjMTA3NjsmIzEwNzc7JiMxMDgzOyYjMTEwMDsgJiMxMDg3OyYjMTA4ODsmIzEwNzc7JiMxMDk0OyYjMTA3NzsmIzEwNzY7JiMxMDc3OyYjMTA4NTsmIzEwOTA7JiMxMTEwOyYjMTA3NDsuPC90ZXh0Pjx0ZXh0IGZpbGw9IiM4ODg4ODgiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEwIiBsZW5ndGhBZGp1c3Q9InNwYWNpbmciIHRleHRMZW5ndGg9IjEzMi41NTg2IiB4PSI5NzEuMTI2IiB5PSI1MzcuODcwMyI+JiMxMDUzOyYjMTA1ODsmIzEwNTk7JiMxMDU5OyAmIzEwNTA7JiMxMDU1OyYjMTAzMDsgJiMxMTEwOyYjMTA4NDsuJiMxMDMwOy4mIzEwNTc7JiMxMTEwOyYjMTA4MjsmIzEwODY7JiMxMDg4OyYjMTA4OTsmIzExMDA7JiMxMDgyOyYjMTA4NjsmIzEwNzU7JiMxMDg2OzwvdGV4dD48dGV4dCBmaWxsPSIjODg4ODg4IiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMCIgbGVuZ3RoQWRqdXN0PSJzcGFjaW5nIiB0ZXh0TGVuZ3RoPSI1MS4zMjgxIiB4PSIxMDExLjc0MTMiIHk9IjU0OS41MTA5Ij4mIzEwNTA7JiMxMDgwOyYjMTExMDsmIzEwNzQ7LTIwMjA8L3RleHQ+PCEtLVNSQz1bWkxOQlJqZjA1RHR0QXd4ODZaU3NnOGVZbVlSelc2eE9MSzg2ZDBHTHVTZXNLak03MTI0WU5LSERMS0xLWWJBYlJOdTBHTDRmaF94MmRKX2djVjRKUWpEd0NSQmR0WmRkdENUU0V5dEpDdV9FQkJEWEVPeWVVNGVkVGppWmpfZFFFWkFBTEJUUmpkREtRdmRyNS1MZE1Dbkp3djFBak5CYi02Y3JlRXNoS3JReDRPQWVSd19malFtcUZGclcwd3pvTjN0R1lCX29iN19tWTJVWXBzQ1VZTkVVNFN6dnBJam44T1BvTXRJbkZIMTN5Tzd1RHd6NTVwdVpOZVgtQWljSjNIQS0wT080MW1PbFVHRzRsNHg1R0I1RUdOOEVYdDRLWTJfVTN5SWlVeFAzRVJ3TGQzbUpGVlp3Nll6cFBCZktTSXM3ellteWZnYUVnRU1iZG9RSUFUQlZIMTh4aGJLdE5Pam9BZGpMbFZJdUxkeFV2ZGplV0h3VTg5dmhnRWNoLTRLRldPOEdNUFdKbDd4bzZFNGhmSnVwMDZaRkQyRmNUcDdfRGY0TUtkczZTOEkwTzdnOUxBaWFCeUdMcUJpSGpnUWRHbmF4TElFX0tyS1FNU3dMNjJRTHpzRGk4cWtlNEtjejJWaldCVWxFQXZ3QkZnTFlRTmVzc2N3cjRiVFNnRDhrZV93Mmotb0ZESTYyaVNmTExvT3pXemw4ZzNmYmJocU9JRmg0Q19KdUdncjFnMDUzWTVfeV9fZzZRUUMwRGtoTTA1ZTZYU3R0Z0JneUx3MFh4Q2p5cDE4THB5dmFMRlRpMGdKZjZjTU54SGZwOVBFYjF5YkEwSV95S19yNkJQQU9YSzNvcmc4a1Bod2lsRm1Edkt2UUhfQ3R3VDF3dlU2d2t4N0xzNjRqYWpPOFJGMUJGUmxCY2NKRXkzMXNVdjBNNlJWRFlRWjNDa094LVJWYnYzcUVBdjFmQVZuaktPa1pfWDBkamtxYl9YM3k0SFRJcGotWGg4LXVuRFVDVnNzQ1BlcHJFcEkzN0IwT0JIYXBMdWlIbF8xdFZrMDdtZ1l6dnU2eWNha0QxbmZfbXZsZzJGSjNiTWhVMlFfWk94VVcxcjNVczNWWU52Nmx6V3kwXS0tPjwvZz48L3N2Zz4=" alt="" /></p>
+<p><strong>Діаграма прецедентів</strong></p>
+</center>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Проєктування-бази-даних"><a class="header" href="#Проєктування-бази-даних">Проєктування бази даних</a></h1>
+<p>В рамках проекту розробляється:</p>
+<ul>
+<li>модель бізнес-об'єктів</li>
+<li>ER-модель</li>
+<li>реляційна схема</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Реалізація-інформаційного-та-програмного-забезпечення"><a class="header" href="#Реалізація-інформаційного-та-програмного-забезпечення">Реалізація інформаційного та програмного забезпечення</a></h1>
+<p>В рамках проекту розробляється:</p>
+<ul>
+<li>SQL-скрипт для створення на початкового наповнення бази даних</li>
+<li>RESTfull сервіс для управління даними</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Тестування-працездатності-системи"><a class="header" href="#Тестування-працездатності-системи">Тестування працездатності системи</a></h1>
+<p><em>В цьому розділі необхідно вказати засоби тестування, навести вихідні коди тестів та результати тестування.</em></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Висновки-1"><a class="header" href="#Висновки-1">Висновки</a></h1>
+<p>У висновках наводять оцінку отриманих результатів, можливі галузі його використання. Висновки повинні містити в собі коротку узагальнену оцінку результатів розробки, у
+тому числі і з погляду на їх технічно-економічну ефективність. Необхідно порівняти
+отримані результати усіх характеристик об’єкта проєктування із завданням і з основними показниками сучасних аналогічних об’єктів.</p>
+<p>Необхідно вказати яке нове технічне рішення покладене в основу проєкту і у чому її
+переваги, що нового було запропоновано самим студентом.</p>
+<p>На базі отриманих висновків можуть надаватися рекомендації по використанню розробки. Вони повинні
+мати конкретний характер і бути цілком підтверджені проєктом.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Методичні-вказівки-до-виконання-лабораторних-робіт"><a class="header" href="#Методичні-вказівки-до-виконання-лабораторних-робіт">Методичні вказівки до виконання лабораторних робіт</a></h1>
+<p><em>для студентів напряму підготовки 123 "Комп’ютерна інженерія" всіх форм навчання</em></p>
+<h2 id="Лабораторна-робота-1-Виявлення-вимог-до-функціональності-програми-Розробка-запитів-зацікавлених-осіб"><a class="header" href="#Лабораторна-робота-1-Виявлення-вимог-до-функціональності-програми-Розробка-запитів-зацікавлених-осіб">Лабораторна робота №1. Виявлення вимог до функціональності програми. Розробка запитів зацікавлених осіб</a></h2>
+<p><strong>Мета:</strong> вивчення вимог до програмного проекту, структури документів та
+програмної системи, формування запитів зацікавлених осіб.</p>
+<p><strong>Довідка</strong></p>
+<p>Розробка концептуальної моделі предметної області є першим найважливішим етапом
+розробки програмної системи, оскільки визначає узагальнене уявлення про
+інформацію її кінцевих користувачів.</p>
+<p><strong>Визначення цілі, перетворення системи</strong></p>
+<p>База даних є частиною програмної системи, тому для її розробки необхідно
+проаналізувати вимоги до системи в цілому.</p>
+<p><strong>Послідовність дій:</strong></p>
+<ol>
+<li>
+<p>Аналіз предметної області</p>
+</li>
+<li>
+<p>Формування запитів зацікавлених осіб</p>
+</li>
+</ol>
+<p><strong>Запити зацікавлених осіб</strong> – це опис вимог різних учасників проекту
+(замовників, користувачів та ін.) до змісту системи, що містить організаційні
+(призначення системи), функціональні (можливості системи) та експлуатаційні
+аспекти.</p>
+<p><strong>Структура документів:</strong></p>
+<p>Дивись у <a href="guidelines/../docs/state-of-the-art.html">"Аналіз предметної області"</a> та <a href="guidelines/../docs/stakeholders-needs.html">"Запити зацікавлених осіб"</a>.</p>
+<p><strong>Завдання:</strong></p>
+<ol>
+<li>
+<p>Провести аналіз предметної області</p>
+</li>
+<li>
+<p>Визначити коло зацікавлених осіб</p>
+</li>
+<li>
+<p>Визначити призначення розроблюваної системи за структурою списку запитів
+зацікавлених осіб (компетенції, бізнес-сценарії та ін.)</p>
+</li>
+</ol>
+<h2 id="Питання-для-самостійної-перевірки"><a class="header" href="#Питання-для-самостійної-перевірки">Питання для самостійної перевірки</a></h2>
+<ol>
+<li>
+<p>Які категоріі користувачів можуть приймати участь у проекті?</p>
+</li>
+<li>
+<p>Етапи розробки баз даних.</p>
+</li>
+<li>
+<p>Що означає "концептуальна модель"?</p>
+</li>
+<li>
+<p>Де визначаються ситуації, що не входять у список передумов?</p>
+</li>
+</ol>
+<h2 id="Лабораторна-робота-2-Виявлення-вимог-до-функціональності-програми-Розробка-моделі-прецедентів"><a class="header" href="#Лабораторна-робота-2-Виявлення-вимог-до-функціональності-програми-Розробка-моделі-прецедентів">Лабораторна робота №2. Виявлення вимог до функціональності програми. Розробка моделі прецедентів</a></h2>
+<p><strong>Мета:</strong> вивчення вимог до програмного проекту, структури документів та
+програмної системи, формування моделі прецедентів.</p>
+<p><strong>Довідка</strong></p>
+<p>Розробка концептуальної моделі предметної області є першим найважливішим етапом
+розробки програмної системи, оскільки визначає узагальнене уявлення про
+інформацію її кінцевих користувачів.</p>
+<p><strong>Визначення цілі, перетворення системи</strong></p>
+<p>База даних є частиною програмної системи, тому для її розробки необхідно
+проаналізувати вимоги до системи в цілому.</p>
+<p><strong>Етапи розробки баз даних:</strong></p>
+<ol start="2">
+<li>
+<p>Діаграми Use Case</p>
+</li>
+<li>
+<p>Специфікація, сценарій, Sequence-діаграми</p>
+</li>
+</ol>
+<p><em><strong>Прецедент (англ. Use Case)</strong></em> – список етапів, що послідовно описує взаємодію
+системи з користувачем та використовується для досягнення певної мети,
+визначеної дійовою особою (англ. Actor).</p>
+<p>Прецеденти слугують для документування функціональних вимог до програмних
+систем. Описуючи деякий цілісний фрагмент поведінки системи, прецедент не
+вдається в особливості внутрішньої структури суб’єкта. Визначення прецеденту
+містить всі властиві йому види поведінки: основну послідовність, різноманітні
+варіанти стандартної поведінки та різні виключні ситуації із зазначенням
+відповідної реакції на них.</p>
+<p>На діаграмах прецедентів в UML Use Case зображується у вигляді еліпса, всередині
+якого (або під ним) вказується ім’я елемента.</p>
+<p>До прецедентів в UML застосовні наступні види відношень:</p>
+<ul>
+<li>
+<p><em><strong>Асоціація (англ. Association)</strong></em> – вказує на те, що Actor ініціює відповідний
+варіант використання.</p>
+</li>
+<li>
+<p><em><strong>Розширення (англ. Extend)</strong></em> – різновид відношення залежності між базовим
+варіантом використання та його частковим випадком.</p>
+</li>
+<li>
+<p><em><strong>Включення (англ. Include)</strong></em> – визначає зв'язок базового варіанта використання
+з іншим, функціональна поведінка якого завжди задіюється базовим варіантом.</p>
+</li>
+<li>
+<p><em><strong>Узагальнення (англ. Generalization, наслідування)</strong></em> – моделює відповідну
+спільність ролей.</p>
+</li>
+</ul>
+<p><em><strong>Actor</strong></em> – діюча особа (користувач, система, програма), спроможна приймати
+рішення та взаємодіяти з розроблюваною системою.</p>
+<p><em><strong>Діаграма Use Case</strong></em> – абстраговане представлення компонентів бази даних, дій та
+зв’язків між ними.</p>
+<p><em><strong>Специфікация</strong></em> - це формалізований опис властивостей, характеристик і функцій
+об'єктів.</p>
+<p><img src="guidelines/media/c5bd823142768c01979ee59925abccc9.png" alt="" /></p>
+<ol start="3">
+<li><strong>Специфікація Use Case</strong></li>
+</ol>
+<p><strong>ID</strong> (ідентифікаційний номер, що присвоюється прецеденту при розробці системи)</p>
+<p><strong>Назва</strong> (власне, назва прецеденту)</p>
+<p><strong>Учасники</strong> (сторони, що діють за вказаним сценарієм)</p>
+<p><strong>Передумови</strong> (перелік дій, які необхідно виконати перед виконанням даного варіанту використання)</p>
+<p><strong>Результати</strong> (вихідні дані та зміна стану системи)</p>
+<p><strong>Виключні ситуації</strong> (ситуації, що суперечать виконанню передумов)</p>
+<p><strong>Основний сценарій</strong></p>
+<p><strong>Сутності</strong> (найменші неподільні елементи проекту, що приймають участь у виконанні сценарію)</p>
+<p><em><strong>Сценарій</strong></em> - послідовність дій, що мають бути виконані для досягнення
+цілі, показує взаємодію Actor’a з системою у вигляді «користувач виконую дію
+над системою» з вказанням результату, що повертає система. Зображується в
+UML у вигляді діаграми Sequence.</p>
+<p>Сценарій слугує основою для виділення сутності проекту.</p>
+<p><strong>Приклад:</strong></p>
+<p><em>ID:</em> <strong>UC_CreateRegCard</strong></p>
+<p><em>Назва:</em> Створення реєстраційної картки користувача</p>
+<p><em>Учасники:</em> Адміністратор, Система</p>
+<p><em>Передумова:</em> Адміністратор авторизований в системі</p>
+<p><em>Виключні ситуації:</em></p>
+<ul>
+<li>
+<p>Адміністратор не авторизований</p>
+<ol>
+<li>Завантажити сторінку авторизації</li>
+</ol>
+</li>
+</ul>
+<p><em>Результат</em> Деактивована реєстраційна карта нового клієнта.</p>
+<p><em>Основний сценарій:</em></p>
+<ol>
+<li>
+<p>Адміністратор починає взаємодію.</p>
+</li>
+<li>
+<p>Система створює форму «Новий користувач».</p>
+</li>
+<li>
+<p>Адміністратор заповнює поля: ім’я, роль, адреса елеткронної пошти, текст
+запрошення.</p>
+</li>
+<li>
+<p>Система створює деактивовану реєстраційну картку нового користувача.</p>
+</li>
+<li>
+<p>Система генерує повідомлення запрошення користувача з URL для активації
+реєстраційної картки.</p>
+</li>
+<li>
+<p>Система пересилає повідомлення.</p>
+</li>
+<li>
+<p>Система генерує стан виконання операції.</p>
+</li>
+<li>
+<p>Адміністратор закінчує взаємодію.</p>
+</li>
+</ol>
+<p><em>Діаграма:</em></p>
+<p><img src="guidelines/media/dfda7368f9ff9bb07cbb2d9587b34b30.png" alt="" /></p>
+<p><em>Сутності:</em> Реєстраційна картка, ім’я, роль, адреса елеткронної пошти, текст
+запрошення, повідомлення запрошення користувача, URL для активації реєстраційної
+картки.</p>
+<p><strong>Завдання:</strong></p>
+<ol>
+<li>
+<p>На основі аналізу запитів зацікавлених осіб розробити загальну діаграму
+прецедентів</p>
+</li>
+<li>
+<p>Для кожного прецедента розробити специфікацію</p>
+</li>
+</ol>
+<p><strong>Питання для самостійної перевірки</strong></p>
+<ol>
+<li>
+<p>Які категоріі користувачів можуть приймати участь у проекті?</p>
+</li>
+<li>
+<p>Що представляє собою діаграма Use Сase?</p>
+</li>
+<li>
+<p>Етапи розробки баз даних.</p>
+</li>
+<li>
+<p>Які види відношень застосовуються в UML</p>
+</li>
+<li>
+<p>Де ініціюється і закінчується процес взаємодії відповідно до сценарію
+прецедента?</p>
+</li>
+<li>
+<p>Яке зображення має прецедент на діаграмі UML?</p>
+</li>
+<li>
+<p>З яких частин складається специфікація Use Case?</p>
+</li>
+<li>
+<p>Де визначаються ситуації, що не входять у список передумов?</p>
+</li>
+<li>
+<p>Які повноваження може мати Actor?</p>
+</li>
+<li>
+<p>На основі чого відбувається виділення сутностей проекту?</p>
+</li>
+<li>
+<p>Яке призначення прецедентів?</p>
+</li>
+<li>
+<p>Які стосунки можливі між актором і елементом Use Case?</p>
+</li>
+</ol>
+<h2 id="Лабораторна-робота-3-Розробка-моделі-бізнес-обєктів"><a class="header" href="#Лабораторна-робота-3-Розробка-моделі-бізнес-обєктів">Лабораторна робота №3. Розробка моделі бізнес-об’єктів</a></h2>
+<p><strong>Мета:</strong> Зрозуміти сутність бізнес-моделювання. Отримати навички розробки
+моделі бізнес-об’єктів та словника предметної області.</p>
+<p><strong>Довідка</strong></p>
+<p><em><strong>Бізнес-моделювання (ділове моделювання)</strong></em> - діяльність з формування моделей
+організацій, що включає опис ділових об'єктів (підрозділів, посад, ресурсів,
+ролей, процесів, операцій, інформаційних систем, носіїв інформації і т.д.) і
+вказівка зв'язків між ними. Вимоги до моделей, що формуються та їх відповідне
+утримання визначаються цілями моделювання.</p>
+<p>Бізнес-моделюванням також називають дисципліну і окремий підпроцес в процесі
+розробки програмного забезпечення, в якому описується діяльність компанії та
+визначаються вимоги до системи - ті підпроцеси та операції, що підлягають
+автоматизації розробки в інформаційній системі.</p>
+<p><em><strong>Бізнес-об’єкт</strong></em> представляє значну і постійну частину інформації, керованої
+бізнес-акторами і виконавцями. Бізнес-об’єкти пасивні, тобто, вони не ініціюють
+взаємодії самі по собі. Бізнес-об’єкт може бути використаний в безлічі різних
+реалізацій бізнес-прецедентів і зазвичай реагує на будь-яку одиничну взаємодію.
+Бізнес-об’єкти забезпечують основу для поділу інформації (потоку документів)
+серед виконавців, що беруть участь в різних реалізаціях бізнес-прецедентів.</p>
+<p>Бізнес-об’єкти являють абстракцію важливої постійної інформації в
+бізнес-системі. Будь-яка частина інформації, яка є властивістю чого-небудь ще,
+ймовірно не є бізнес-об’єктом в дійсності.</p>
+<p>Бізнес-аналітик відповідає за ідентифікацію та опис бізнес-об’єктів, а також за
+визначення впливу організаційних змін на інформацію, створену і необхідну
+бізнес-системою. Бізнес-об’єкти також використовуються системними аналітиками та
+дизайнерами при описі системних прецедентів та ідентифікації програмних об’єктів
+відповідно.</p>
+<p>Метою моделювання бізнес-об’єктів та їх станів є використання моделей
+бізнес-об’єктів та їх станів при проектуванні переліку вхідних / вихідних
+сигналів і даних, інтерфейсу користувача, баз даних (БД), класів, які реалізують
+функції системи.</p>
+<p>Бізнес-об’єкт (business entity), представляє абстракцію суті реального світу.
+Прикладами бізнес-об’єктів можуть бути заявка на кредитування, договір, угода і
+т.д.</p>
+<p>Модель з описом бізнес-об’єктів повинна будуватися на основі опису бізнес-процесів. Бізнес-об’єкти
+повинні моделюватися в розбивці по бізнес-процесам. При
+створенні програмної системи моделюватися повинні тільки бізнес-об’єкти,
+пов'язані з діяльностями, що підлягають автоматизації.</p>
+<p>Для створення опису документів / бізнес-об’єктів використовується компоненти
+діаграми класів / функцій:</p>
+<ul>
+<li>
+<p>пакет (package);</p>
+</li>
+<li>
+<p>бізнес сутність (business entity);</p>
+</li>
+<li>
+<p>асоціативний зв'язок (association);</p>
+</li>
+<li>
+<p>зв'язок агрегація (agregation);</p>
+</li>
+<li>
+<p>зв'язок композиція (composition);</p>
+</li>
+<li>
+<p>зв'язок спадкування або батько нащадок (generalization).</p>
+</li>
+</ul>
+<p><em><strong>Пакет</strong></em> використовується для групування бізнес об’єктів.</p>
+<p><img src="guidelines/media/a04dfabb76e4bedc8704d33284c56f52.png" alt="" /></p>
+<p><em><strong>Елемент бізнес-сутність</strong></em></p>
+<p><img src="guidelines/media/842bddad8c668b9e19ac40fef2fab898.png" alt="" /></p>
+<p>Бізнес-об’єкти можуть мати атрибути. При описі атрибутів можна зазначати:</p>
+<ul>
+<li>
+<p>назву атрибута;</p>
+</li>
+<li>
+<p>тип атрибута;</p>
+</li>
+<li>
+<p>стереотип атрибута;</p>
+</li>
+<li>
+<p>початкове значення атрибута (опціонально);</p>
+</li>
+<li>
+<p>правила формування атрибута;</p>
+</li>
+<li>
+<p>приклади значень атрибута.</p>
+</li>
+</ul>
+<p><img src="guidelines/media/9d1c428e0f8843cb177fee5ceeb50b80.png" alt="" /></p>
+<p>Для завдання типів атрибутів можуть використовуватися типи даних:</p>
+<ul>
+<li>
+<p>число;</p>
+</li>
+<li>
+<p>символ;</p>
+</li>
+<li>
+<p>дата;</p>
+</li>
+<li>
+<p>час;</p>
+</li>
+<li>
+<p>логічне значення;</p>
+</li>
+<li>
+<p>об'єкт.</p>
+</li>
+</ul>
+<p>Тип даних «число» можна використовувати для опису чисел будь-якого виду,
+наприклад, «число (10.3)». В дужках рекомендується зазначати загальна кількість
+цифр числа і якщо потрібно, кількість цифр після крапки.</p>
+<p>Тип даних символ можна використовувати для опису рядків символів, наприклад,
+«символ (100)».</p>
+<p>Тип даних «дата» можна використовувати для атрибутів, які є датами.</p>
+<p>Тип даних «час» можна використовувати для атрибутів, які є часом.</p>
+<p>Тип даних «логічне значення» можна використовувати для атрибутів, які можуть
+приймати два значення, наприклад «істина», «брехня».</p>
+<p>Тип даних «об'єкт» можна використовувати для атрибутів, що представляють великий
+об'єкт, наприклад креслення, малюнок.</p>
+<p>Початкове значення атрибута не є обов'язковим полем.</p>
+<p>Якщо значення атрибута можуть задаватися елементом списку, або бути кандидатами
+на довідники, словники, то в колонці таблиці початкове значення, пов'язаної з
+цим атрибутом, можна зазначатися слово словник, довідник. Якщо атрибут має
+початкове значення, то слово словник або довідник можна вказувати через кому
+після значення атрибута за замовчуванням.</p>
+<p>За атрибутам, за якими буде проводитися угруповання або сортування, наприклад,
+для звітів, в описі початкових значень можна додатково вказувати слово параметр
+угруповання або сортування.</p>
+<p>Атрибути можуть задаватися елементом списку, бути кандидатами на словники,
+довідники та одночасно бути атрибутом, за яким проводитиметься угруповання. В
+цьому випадку за словом список, або словник, довідник через кому можна
+використовувати слово параметр.</p>
+<p>Якщо атрибут задається типом даних об'єкт, то початкове значення може задається
+як ім'я файлу, в якому зберігатиметься об'єкт, наприклад, малюнок або креслення.</p>
+<p><em><strong>Асоціативний зв'язок (association)</strong></em> між бізнес-сутностями (business entity) є
+смисловий зв'язок. Зв'язок не пояснює, як сутності спілкуються один з одним,
+відзначається тільки смислова залежність між ними. Асоціативний зв'язок
+(association) зображується на діаграмі класів суцільний прямою лінією.</p>
+<p>Асоціативний зв'язок може бути пойменований. Ім'я асоціації вказується, виходячи
+з контексту. Рекомендується вказувати ім'я асоціації так, щоб воно читалося
+коректно зліва направо або зверху вниз.</p>
+<p><img src="guidelines/media/d8121c068546f3ee39d5a80d292aa69d.png" alt="" /></p>
+<p><em><strong>Зв'язок композиція</strong></em> позначає зв'язок частина цілого (part of), де частина не може
+існувати без цілого. Наприклад, журнал включає заголовок журналу і рядки
+журналу.</p>
+<p>Композиція (composition) зображується суцільною прямою лінією з додаванням на
+кінці зафарбованого ромба:</p>
+<p><img src="guidelines/media/842bddad8c668b9e19ac40fef2fab898.png" alt="" /></p>
+<p><em><strong>Зв'язок агрегація</strong></em> означає зв'язок частина цілого (part of), де частина може
+існувати без цілого (контейнер).</p>
+<p><img src="guidelines/media/b8487b0e87e1b9b944076cc7e1f3927b.png" alt="" /></p>
+<p>Кількість бізнес об’єктів, які беруть участь в зв'язку, називається потужністю
+зв'язку. Потужність вказується на кожному кінці зв'язку. Потужність означає
+число зв'язків між однією бізнес сутністю на початку лінії зв'язку з бізнес
+сутностями в кінці лінії зв'язку.</p>
+<p>Потужність зв'язку може позначатися таким чином:</p>
+<ul>
+<li>
+<p>1 - рівно одна бізнес сутність;</p>
+</li>
+<li>
+<p>0 .. * - нуль або більше бізнес об’єктів;</p>
+</li>
+<li>
+<p>1 .. * - одна або більше бізнес об’єктів;</p>
+</li>
+<li>
+<p>0 .. 1 - нуль або одна бізнес сутність;</p>
+</li>
+<li>
+<p>5 .. 8 - специфічний діапазон 5,6,7,8;</p>
+</li>
+<li>
+<p>4 .. 7, 9 - комбінація 4,5,6,7, або 9 бізнес об’єктів.</p>
+</li>
+</ul>
+<p>Потужність зв'язку з боку зафарбованого ромба не слід вказувати, оскільки вона
+завжди дорівнює 1 по нотації мови UML.</p>
+<p><img src="guidelines/media/5da8a3354736283afa9d2b67d77cc609.png" alt="" /></p>
+<p><em><strong>Спадкування</strong></em> або зв'язок батько-нащадок (generalization) між бізнес об’єктами -
+це таке відношення між ними, коли один бізнес-об’ект повторює структуру іншого
+(одиночне спадкоємство) або декількох інших (множинне успадкування)
+бізнес-об’єктів.</p>
+<p>Зв'язок спадкування (generalization) не називається, на ній також не вказується
+потужність.</p>
+<p>На діаграмах класів спадкування (generalization) зображується стрілкою з не
+зафарбовані трикутником, зверненим до об’єкта, від якої успадковуються
+властивості.</p>
+<p><img src="guidelines/media/27e4c858c8e0e26ef64a6444bc05dfa8.png" alt="" /></p>
+<p><em><strong>Словник предметної області</strong></em></p>
+<p>Основне завдання на цьому етапі сформувати однозначний термінологічний словник
+для предметної області. Деякі об'єкти можна назвати різними словами, наприклад,
+«Огляд книги» може мати на увазі те ж саме, що «Редакторський огляд» або «Огляд,
+складені користувачем».</p>
+<p>Модель предметної області постійно змінюється і повинна відображати поточне
+розуміння предметної області.</p>
+<p>З використанням словника предметної області має відбуватися спілкування між
+учасниками робочої групи. Але модель предметної області краще, ніж словник. Вона
+показує графічно, як терміни пов'язані між собою. Проте нам все одно потрібно
+створювати словник предметої області, щоб визначити список термінів та їх
+пояснень.</p>
+<p><strong>Завдання</strong></p>
+<p>1.Вивичити основні концепції бізнес моделювання. Вільно володіти термінологією:
+бузнес-об’єкт, словник предметної області, їх сутність та призначення.</p>
+<p>2.Виділити з Use CASE запити зацікавлених осіб.</p>
+<p>3.Виділити об'єкти, над якими відбуівються дії, та їхні атрибути.</p>
+<p>4.Визначити співвідношення між вище згаданими компонентами</p>
+<p>5.Зробити розбивку на пакети, якщо це необхідно.</p>
+<p>6.Побудувати діаграму бізнес-об’єктів.</p>
+<p>7.Розробити словник предметної області.</p>
+<p><strong>Питання для самостійної перевірки</strong></p>
+<p>1.Що таке бізнес моделювання?</p>
+<p>2.Призначення бізнес моделювання?</p>
+<p>3.Де використовується?</p>
+<p>4.Що таке бізнес-сутність?</p>
+<p>5.Для чого використовується бізнес-сутність?</p>
+<p>6.Як визначити бізнес-сутність?</p>
+<p>7.Які існують зв’язки між бізнес-сутностями?</p>
+<p>8.Що таке асоціативний зв’язок? Як він відображається?</p>
+<p>9.Що таке зв’язок агрегація? Як він відображається?</p>
+<p>10.Що таке зв’язок композиція? Як він відображається?</p>
+<p>11.Що таке зв’язок спадкування? Як він відображається?</p>
+<p>12.Що таке атрибути бізнес-сутості?</p>
+<p>13.Для чого існують атрибути бізнес-об’єктів?</p>
+<p>14.Що таке словник предметної області?</p>
+<ol start="15">
+<li>Для чого використовується словник предметної області?</li>
+</ol>
+<h1 id="Лабораторна-робота-4-Розробка-реляційної-схеми"><a class="header" href="#Лабораторна-робота-4-Розробка-реляційної-схеми">Лабораторна робота №4. Розробка реляційної схеми</a></h1>
+<p><strong>МЕТА:</strong> Вивчення структури реляційних таблиць. Методи створення реляційної таблиці.</p>
+<p><strong>ДОВІДКА</strong></p>
+<p><strong>Реляційна модель даних</strong> — логічна модель даних, що описує:</p>
+<ul>
+<li>
+<p>структури даних у вигляді наборів відношень, що, можливо, змінюються в часі;</p>
+</li>
+<li>
+<p>теоретико-множинні операції над даними: об'єднання, перетин, різниця і
+декартів добуток;</p>
+</li>
+<li>
+<p>спеціальні реляційні операції: селекція, проекція, з'єднання і розподіл;</p>
+</li>
+<li>
+<p>а також спеціальні правила, що забезпечують цілісність даних.</p>
+</li>
+</ul>
+<p>Обробка даних в реляційній моделі ґрунтується на принципах реляційної алгебри.</p>
+<p>Реляційна база даних — основана на реляційній моделі даних. Для роботи з
+реляційними БД застосовують реляційні СКБД. Інакше кажучи, реляційна база даних
+— це база даних, яка сприймається користувачем як набір нормалізованих відношень
+різного ступеню.</p>
+<p><strong>Відношення</strong> має просту графічну інтерпретацію, воно може буде представлене у
+вигляді таблиці, стовпці (поля, атрибути) якої відповідають входженням доменів у
+відношення, а рядки (записи, кортежі) - наборам з n значень, що взяті з
+початкових доменів. Кількість рядків n, називають кардинальним числом
+відношення, або потужністю відношення.</p>
+<p>Така таблиця має ряд властивостей:</p>
+<ul>
+<li>
+<p>В таблиці немає двох однакових рядків.</p>
+</li>
+<li>
+<p>Таблиця має стовпці, відповідні атрибутам відношення.</p>
+</li>
+<li>
+<p>Кожний атрибут у відношенні має унікальне ім'я.</p>
+</li>
+<li>
+<p>Порядок рядків в таблиці довільний.</p>
+</li>
+</ul>
+<p><em><strong>Заголовок (схема) відношення</strong></em> — скінченна множина впорядкованих пар виду &lt;A,
+T&gt;, де A називається іменем атрибута, а T означає ім'я деякого базового типу
+або раніше визначеного домену. Всі імена атрибутів в заголовку мають бути
+різними.</p>
+<p><em><strong>Кортеж,</strong></em> відповідний заголовку — множина впорядкованих триплетів &lt;A, T, v&gt;, по
+одному такому триплету для кожного атрибута в заголовку. Третій елемент – v –
+триплета &lt;A, T, v&gt; має бути дозволеним значенням типу даних або домена T.
+Через те, що імена атрибутів унікальні, вказувати домен в кортежі зайве.</p>
+<p><em><strong>Тіло відношення</strong></em> — невпорядкована множина різних кортежів.</p>
+<p>Реляційна таблиця має поля ID (ідентифікатор), тип даних, ключ. Зв’язки
+створюються між первинним ключем (PK) и зовнішнім (FK). Зв'язок йде від
+вторинного до первинного.</p>
+<p><strong>Приклад</strong></p>
+<p><img src="guidelines/media/3017ca65095f1270bb16d35bf6092c0a.png" alt="" /></p>
+<p><em><strong>Реляційна алгебра</strong></em> — відгалуження логіки першого порядку, множина відношень
+замкнених операторами. Оператори застосовуються до відношень, в результаті
+застосування отримується нове відношення.</p>
+<p>В математиці, алгебра відношень є алгебраїчною структурою щодо математичної
+логіки та теорії множин.</p>
+<p>Подібно до інших алгебр, деякі оператори є примітивними, а інші, будучи
+визначені через примітивні, є похідними від них. В реляційній алгебрі Кодда
+визначено такі шість примітивних операторів: вибірка, проекція, декартів
+добуток, об'єднання та різниця і перейменування.</p>
+<p>Шість операторів є фундаментальними в тому сенсі, що жоден із них не можна
+відкинути без втрати потужності. Багато інших операторів було визначено
+комбінацією цих шести. Серед найважливіших можна назвати: перетин множин,
+ділення та природнє об'єднання. Насправді, ISBL дала підстави для заміни
+декартового добутку природнім об'єднанням, окремим випадком якого є декартів
+добуток.</p>
+<p><strong>Завдання</strong></p>
+<ol>
+<li>
+<p>Вивчити реляційну модель даних, що вона описує, де використовується.</p>
+</li>
+<li>
+<p>Побудувати реляційну таблицю:</p>
+</li>
+<li>
+<p>Виходячи з діаграми бізнес об’єктів побудувати таблицю з відповідними
+назвами комірок.</p>
+</li>
+<li>
+<p>Відповідно до назви комірки назначити відповідний тип даних для кожної
+комірки.</p>
+</li>
+<li>
+<p>Назначити ключі в кожній таблиці, в яких потрібно створити зв’язки.</p>
+</li>
+<li>
+<p>Створити відношення між ключами.</p>
+</li>
+</ol>
+<p><strong>Питання для самостійної перевірки</strong></p>
+<ol>
+<li>
+<p>Що таке реляційна модель даних.</p>
+</li>
+<li>
+<p>Структура реляційної моделі даних.</p>
+</li>
+<li>
+<p>Відношення в реляційній моделі.</p>
+</li>
+<li>
+<p>Призначення реляційних моделей в проектування БД.</p>
+</li>
+<li>
+<p>Призначення реляційної алгебри.</p>
+</li>
+<li>
+<p>Особливості реляційної алгебри.</p>
+</li>
+<li>
+<p>Розмітка реляційної таблиці.</p>
+</li>
+<li>
+<p>Нормальні форми в реляційній моделі даних.</p>
+</li>
+</ol>
+<h1 id="Лабораторна-робота-5-Реалізація-бази-даних-засобами-mysql"><a class="header" href="#Лабораторна-робота-5-Реалізація-бази-даних-засобами-mysql">Лабораторна робота №5. Реалізація бази даних засобами MySQL</a></h1>
+<p><strong>МЕТА:</strong> навчитися встановлювати та налаштовувати системи розробки баз даних MySQL та
+Oracle SQL Developer.</p>
+<p><strong>ДОВІДКА</strong></p>
+<p><strong>Встановлення та налаштування серверу баз даних</strong></p>
+<p>Сервер БД обслуговує базу даних і відповідає за цілісність і збереження даних, а
+також забезпечує операції введення-виведення при доступі клієнта до інформації.</p>
+<p>Архітектура клієнт-сервера складається з клієнтів і серверів. Основна ідея
+полягає в тому, щоб розміщувати сервери на потужних машинах, а додаткам, що
+використовують мовні компоненти СУБД, забезпечити доступ до них з менш потужних
+машин-клієнтів за допомогою зовнішніх інтерфейсів.</p>
+<p>Більшість СУБД використовують мову SQL (Structured Query Language - мова
+структурованих запитів), так як вона зручна для опису логічних підмножин БД.</p>
+<p>Призначення SQL:</p>
+<ul>
+<li>
+<p>Створення БД і таблиці з повним описом їх структури;</p>
+</li>
+<li>
+<p>Виконання основних операцій маніпулювання даними (такі як вставка,
+модифікація і видалення даних з таблиць);</p>
+</li>
+<li>
+<p>Виконання простих і складних запитів.</p>
+</li>
+</ul>
+<p>Одна з ключових особливостей мови SQL полягає в тому, що з її допомогою
+формуються запити, що описують яку інформацію з бази даних необхідно отримати, а
+шляхи вирішення цього завдання програма визначає сама.</p>
+<p><strong>MySQL</strong></p>
+<p>MySQL - вільна система управління базами даних (СКБД). MySQL є власністю
+компанії Oracle Corporation, що отримала її разом з поглинанням Sun
+Microsystems, що здійснює розробку і підтримку програми. Розповсюджується під
+GNU General Public License або під власною комерційною ліцензією.</p>
+<p>Гнучкість СУБД MySQL забезпечується підтримкою великої кількості типів таблиць:
+користувачі можуть вибрати як таблиці типу MyISAM, що підтримують повнотекстовий
+пошук, так і таблиці InnoDB, що підтримують транзакції на рівні окремих записів.
+Більш того, СУБД MySQL поставляється із спеціальним типом таблиць EXAMPLE, що
+демонструє принципи створення нових типів таблиць. Завдяки відкритій архітектурі
+і GPL-ліцензуванню, в СУБД MySQL постійно з'являються нові типи таблиць.</p>
+<p>MySQL портована на велику кількість платформ: AIX, BSDi, FreeBSD, HP-UX, Linux,
+Mac OS X, NetBSD, OpenBSD, OS / 2 Warp, SGI IRIX, Solaris, SunOS, SCO
+OpenServer, SCO UnixWare, Tru64, Windows 95, Windows 98, Windows NT, Windows
+2000, Windows XP, Windows Server 2003, WinCE, Windows Vista і Windows 7.</p>
+<p>MySQL має API для мов Delphi, C, C + +, Ейфель, Java, Лісп, Perl, PHP,
+PureBasic, Python, Ruby, Smalltalk, Компонентний Паскаль і Tcl бібліотеки для
+мов платформи. NET</p>
+<p><strong>Oracle SQL Developer</strong></p>
+<p>Oracle SQL Developer - інтегрована середа розробки на мовах SQL і PL / SQL,
+орієнтована на застосування в середовищі Oracle Database. Корпорація Oracle
+надає продукт безкоштовно. Сама середу написана на мові програмування Java,
+працює на всіх платформах, де доступна середу виконання Java SE.</p>
+<p>Для встановлення серверу потрібно завантажити файл інсталяції. Посилання на
+файли:</p>
+<p>MySQL:</p>
+<ul>
+<li>
+<p><a href="http://vk.com/away.php?to=http%3A%2F%2Fwww.mysql.ru%2Fdownload%2F">/</a></p>
+</li>
+<li>
+<p><a href="http://www.mysql.com/downloads/">http://www.mysql.com/downloads/</a></p>
+</li>
+</ul>
+<p>GUI:</p>
+<ul>
+<li><a href="http://www.mysql.com/downloads/workbench/">http://www.mysql.com/downloads/workbench/</a></li>
+</ul>
+<p>Oracle Developer Tool:</p>
+<ul>
+<li><a href="http://www.oracle.com/technetwork/developer-tools/sql-developer/downloads/index.html">http://www.oracle.com/technetwork/developer-tools/sql-developer/downloads/index.html</a></li>
+</ul>
+<p><strong>Приклад інсталяції</strong></p>
+<p>Для встановлення MySQL:</p>
+<ol>
+<li>
+<p>Завантажити з сайту <a href="http://www.mysql.ru/download/">/</a> install-файл із
+розділу MySQL-5.1 /MySQL Community Server 5.1/ в залежності від параметрів
+системи.</p>
+</li>
+<li>
+<p>Для встановлення стандартного набору функцій в меню інсталяції обираємо
+пункт Typical-&gt;Next-&gt;Install</p>
+</li>
+<li>
+<p>Після інсталяції обираємо пункт <em>Configure the MySQL Server now-&gt;Finish</em></p>
+</li>
+<li>
+<p>Для отримання стандартних налаштувань обираємо пункт Detailed
+configuration-&gt;Server Machine-&gt;Multifunctional Database</p>
+</li>
+<li>
+<p>Вказуємо адресу для зберігання налаштувань -&gt;Next-&gt;Decision Support</p>
+</li>
+<li>
+<p>Enable TCP\IP Networking</p>
+<p><img src="guidelines/media/d0d81f7368cea6ec7170580597a50d2b.jpg" alt="C:\Users\Кристина\Desktop\2.JPG" /></p>
+</li>
+<li>
+<p>Обираємо кодування Manual Selected Default Character Set</p>
+<p><img src="guidelines/media/f918ff9b95ddef7237006b82fd71f11a.jpg" alt="C:\Users\Кристина\Desktop\3.JPG" /></p>
+</li>
+<li>
+<p>Next-&gt;Install as Windows Server-&gt; Next</p>
+</li>
+<li>
+<p>Обираємо параметр Modify Security Service, та вводимо свій пароль
+доступу-&gt;Next-&gt;Execute-&gt;Finish</p>
+<p><img src="guidelines/media/5f2524b35dccdbb582e49119928aa15a.jpg" alt="C:\Users\Кристина\Desktop\4.JPG" /></p>
+</li>
+<li>
+<p>Запускаємо MySQL Command Line Client</p>
+</li>
+<li>
+<p>Вводимо свій пароль.</p>
+<p><img src="guidelines/media/0290fdc4870f37736a44274034b949e6.jpg" alt="C:\Users\Кристина\Desktop\Снимок1.JPG" /></p>
+</li>
+</ol>
+<p>Для встановлення GUI:</p>
+<ol>
+<li>
+<p>Завантажити з сайту <a href="http://www.mysql.com/downloads/workbench/">http://www.mysql.com/downloads/workbench/</a> install-файл
+в залежності від параметрів системи (Примітка. Для користувачів Windows
+система має бути Windows XP SP3 або вище).</p>
+</li>
+<li>
+<p>Для встановлення стандартного набору функцій в меню Setup Type обираємо
+пункт Complete -&gt; Next-&gt;Install-&gt;Finish.</p>
+</li>
+</ol>
+<p><img src="guidelines/media/edab5006611fd66fd220b8bbb251bb2d.png" alt="workb.png" /></p>
+<p>Для встановлення Oracle XE:</p>
+<ol>
+<li>
+<p>Завантажити з сайту
+<a href="http://www.oracle.com/technetwork/products/express-edition/downloads/index.html">html</a>
+архів з програмою інсталяції (Примітка. Для того, щоб мати змогу
+завантажити, потрібно зареєструватись на сайті Oracle).</p>
+</li>
+<li>
+<p>Розпакувати архів. Запустити програму інсталяції Setup.exe.</p>
+</li>
+<li>
+<p>Провести стандартну процедуру встановлення (вибір каталогу, де буде
+встановлена програма, підтвердження лінцензійної домовленості,тощо)</p>
+</li>
+<li>
+<p>У вікні Specify Database Passwords у вказане поле ввести свій унікальний
+пароль для бази даних.</p>
+</li>
+</ol>
+<p>Для встановлення Oracle Developer Tool:</p>
+<ol>
+<li>
+<p>Завантажити з сайту
+<a href="http://www.oracle.com/technetwork/developer-tools/sql-developer/downloads/index.html">html</a>
+архів з програмою (Примітка. Для того, щоб мати змогу завантажити, потрібно
+зареєструватись на сайті Oracle). Програма працює за умови,що на комп’ютері
+встановлена JDK 1.6.0_11 або вище. Завантажити JDK можна за цією адресою:
+<a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">http://www.oracle.com/technetwork/java/javase/downloads/index.html</a></p>
+</li>
+<li>
+<p>Розпакувати архів. Відкрити папку sqldeveloper з архіву і запустити файл
+sqldeveloper.exe. У вікні,що відкриється потрібно вказати повний шлях, за
+яким знаходиться виконавчий файл java.exe. Він знаходиться в папці, в якій
+встановлено Java (наприклад: C:\Program Files\Java\jdk
+1.6.0_32\bin\java.exe).</p>
+</li>
+</ol>
+<p><strong>Мова структурованих запитів SQL</strong></p>
+<p>SQL (англ. Structured query language — мова структурованих запитів) —
+декларативна мова програмування для взаємодії користувача з базами даних, що
+застосовується для формування запитів, оновлення і керування реляційними БД,
+створення схеми бази даних і її модифікація, система контролю за доступом до
+бази даних. Сам по собі SQL не є ні системою керування базами даних, ні окремим
+програмним продуктом. Не будучи мовою програмування в тому розумінні, як C або
+Pascal, SQL може формувати інтерактивні запити або, будучи вбудованою в
+прикладні програми, виступати в якості інструкцій для керування даними. Стандарт
+SQL, крім того, вміщує функції для визначення зміни, перевірки і захисту даних.</p>
+<p>SQL — це діалогова мова програмування для здійснення запиту і внесення змін до
+бази даних, а також управління базами даних. Багато баз даних підтримує SQL з
+розширеннями до стандартної мови. Ядро SQL формує командна мова, яка дозволяє
+здійснювати пошук, вставку, обновлення, і вилучення даних, використовуючи
+систему управління і адміністративні функції. SQL також включає CLI (Call Level
+Interface) для доступу і управління базами даних дистанційно.</p>
+<p><em><strong>Data Definition Language (мова опису даних).</strong></em> За допомогою цієї мови визначають
+дані, вказуючи тип даних, структури уявлення. Взагалі то це частина мови SQL,
+але тільки одна. Це ті оператори, які пов'язані з командами створення, наприклад
+CREATE TABLE. Результатом виконання цих операцій заноситися в системний каталог,
+в якому зберігаються відомості про таблиці.</p>
+<p>Функції мов DDL визначаються першим словом у реченні (часто званому запитом),
+яке майже завжди є дієсловом. У випадку з SQL ці дієслова - «Create»
+(«створити»), «Alter» («змінити»), «Drop» («видалити»). Це перетворює природу
+мови в ряд обов'язкових тверджень (команд) до бази даних.</p>
+<p>Оператор <em><strong>create table</strong></em> створює таблицю з заданим ім'ям у поточній базі даних.
+Якщо немає активної поточної бази даних або зазначена таблиця вже існує, то
+виникає помилка виконання команди.</p>
+<p>У версії MySQL 3.22 і більш пізніх ім'я таблиці може бути вказано як
+«db_name.tbl_name». Ця форма запису працює незалежно від того, чи є зазначена
+база даних поточною. У версії MySQL 3.23 при створенні таблиці можна
+використовувати ключове слово temporary. Тимчасова таблиця автоматично
+видаляється після завершення з'єднання, а її ім'я дійсно тільки протягом даного
+з'єднання. Це означає, що в двох різних з'єднаннях можуть використовуватися
+тимчасові таблиці з однаковими іменами без конфлікту один з одним або з існуючою
+таблицею з тим же ім'ям (існуюча таблиця прихована, поки не видалена тимчасова
+таблиця).</p>
+<p>У версії MySQL 3.23 і більш пізніх можна використовувати ключові слова IF NOT
+EXISTS для того, щоб не виникала помилка, якщо зазначена таблиця вже існує. Слід
+враховувати, що при цьому не перевіряється ідентичність структур цих
+таблиць.Кожна таблиця tbl_name представлена певними файлами в директорії бази
+даних.</p>
+<p>Оператор <em><strong>Drop table</strong></em> видаляє одну чи кілька таблиць.</p>
+<pre><code>DROP TABLE [IF EXISTS] tbl_name [, tbl_name, ...] [RESTRICT \| CASCADE]
+</code></pre>
+<p>Всі табличні дані і визначення видаляються, так що будьте уважні при роботі з цією командою!</p>
+<p>У версії MySQL 3.22 і більш пізніх можна використовувати ключові слова IF
+EXISTS, щоб попередити помилку, якщо зазначені таблиці не існують.</p>
+<p>Опції RESTRICT і CASCADE дозволяють спростити перенесення програми. В даний
+момент вони не задіяні.</p>
+<p>Примітка: DROP TABLE автоматично приймає поточну активну транзакцію.</p>
+<p>Оператор <em><strong>Alter table</strong></em> забезпечує можливість змінювати структуру існуючої
+таблиці.Наприклад, можна додавати або видаляти стовпці, створювати або знищувати
+індекси або перейменовувати стовпці або саму таблицю. Можна також змінювати
+коментар для таблиці і її тип. Якщо оператор ALTER TABLE використовується для
+зміни визначення типу стовпця, але DESCRIBE tbl_name показує, що стовпець не
+змінився, то, можливо, MySQL ігнорує дану модифікацію по одній з причин,
+Наприклад, при спробі змінити стовпець VARCHAR на CHAR MySQL буде продовжувати
+використовувати VARCHAR, якщо дана таблиця містить інші стовпці з змінною
+довжиною.</p>
+<p>Оператор ALTER TABLE під час роботи створює тимчасову копію вихідної
+таблиці.Необхідний зміна виконується на копії, потім вихідна таблиця
+віддаляється, а нова перейменовується. Так робиться для того, щоб в нову таблицю
+автоматично потрапляли всі оновлення крім невдалих. Під час виконання ALTER
+TABLE вихідна таблиця доступна для читання іншими клієнтами. Операції поновлення
+і записи в цій таблиці припиняються, поки не буде готова нова таблиця.</p>
+<p>Слід зазначити, що при використанні будь-якої іншої опції для ALTER TABLE крім
+RENAME, MySQL завжди буде створювати тимчасову таблицю, навіть якщо дані, строго
+кажучи, і не потребують копіюванні (наприклад, при зміні імені стовпця). Ми
+плануємо виправити це в майбутньому, однак, оскільки ALTER TABLE виконується не
+так часто, ми (розробники MySQL) не вважаємо це завдання першочергове. Для
+таблиць MyISAM можна збільшити швидкість відтворення індексного частини (що є
+найбільш повільною частиною в процесі відновлення таблиці) шляхом установки
+змінної myisam_sort_buffer_size досить великого значення.</p>
+<p><strong>Приклад</strong></p>
+<p><img src="guidelines/media/3017ca65095f1270bb16d35bf6092c0a.png" alt="" /></p>
+<p><strong>Скрипт</strong></p>
+<pre><code class="language-sql">-- MySQL Workbench Forward Engineering
+SET \@OLD_UNIQUE_CHECKS=\@\@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET \@OLD_FOREIGN_KEY_CHECKS=\@\@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET \@OLD_SQL_MODE=\@\@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+-- -----------------------------------------------------
+-- Schema DataManagementSystem
+-- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `DataManagementSystem` ;
+-- -----------------------------------------------------
+-- Schema DataManagementSystem
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `DataManagementSystem` DEFAULT CHARACTER SET utf8
+;
+USE `DataManagementSystem` ;
+-- -----------------------------------------------------
+-- Table `DataManagementSystem`.`ObjectControl`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `DataManagementSystem`.`ObjectControl` ;
+CREATE TABLE IF NOT EXISTS `DataManagementSystem`.`ObjectControl` (
+`objectControlId` INT NOT NULL AUTO_INCREMENT,
+`objectType` VARCHAR(45) NULL,
+PRIMARY KEY (`objectControlId`),
+UNIQUE INDEX `objectControlId_UNIQUE` (`objectControlId` ASC))
+ENGINE = InnoDB;
+-- -----------------------------------------------------
+-- Table `DataManagementSystem`.`Metadata`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `DataManagementSystem`.`Metadata` ;
+CREATE TABLE IF NOT EXISTS `DataManagementSystem`.`Metadata` (
+`metadataId` INT NOT NULL AUTO_INCREMENT,
+`Key` VARCHAR(45) NULL,
+`Value` VARCHAR(45) NULL,
+`objectControlId` INT NOT NULL,
+PRIMARY KEY (`metadataId`, `objectControlId`),
+INDEX `fk_Metadata_ObjectControl_idx` (`objectControlId` ASC),
+UNIQUE INDEX `metadataId_UNIQUE` (`metadataId` ASC),
+CONSTRAINT `fk_Metadata_ObjectControl`
+FOREIGN KEY (`objectControlId`)
+REFERENCES `DataManagementSystem`.`ObjectControl` (`objectControlId`)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+-- -----------------------------------------------------
+-- Table `DataManagementSystem`.`DataPoints`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `DataManagementSystem`.`DataPoints` ;
+CREATE TABLE IF NOT EXISTS `DataManagementSystem`.`DataPoints` (
+`tableName` VARCHAR(45) NOT NULL,
+`dataPointsId` INT NOT NULL,
+PRIMARY KEY (`dataPointsId`),
+UNIQUE INDEX `dataPointsId_UNIQUE` (`dataPointsId` ASC),
+UNIQUE INDEX `tableName_UNIQUE` (`tableName` ASC),
+CONSTRAINT `fk_DataPoints_ObjectControl1`
+FOREIGN KEY (`dataPointsId`)
+REFERENCES `DataManagementSystem`.`ObjectControl` (`objectControlId`)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+-- -----------------------------------------------------
+-- Table `DataManagementSystem`.`Concept`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `DataManagementSystem`.`Concept` ;
+CREATE TABLE IF NOT EXISTS `DataManagementSystem`.`Concept` (
+`conceptId` INT NOT NULL,
+`conceptName` VARCHAR(45) NULL,
+`type` VARCHAR(45) NULL,
+`validator` VARCHAR(45) NULL,
+`tableName` VARCHAR(45) NULL,
+`filter` VARCHAR(45) NULL,
+`conceptParentId` INT NULL,
+PRIMARY KEY (`conceptId`),
+INDEX `fk_Concept_Concept1_idx` (`conceptParentId` ASC),
+UNIQUE INDEX `conceptId_UNIQUE` (`conceptId` ASC),
+UNIQUE INDEX `conceptName_UNIQUE` (`conceptName` ASC),
+CONSTRAINT `fk_Concept_ObjectControl1`
+FOREIGN KEY (`conceptId`)
+REFERENCES `DataManagementSystem`.`ObjectControl` (`objectControlId`)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION,
+CONSTRAINT `fk_Concept_Concept1`
+FOREIGN KEY (`conceptParentId`)
+REFERENCES `DataManagementSystem`.`Concept` (`conceptId`)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+-- -----------------------------------------------------
+-- Table `DataManagementSystem`.`Role`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `DataManagementSystem`.`Role` ;
+CREATE TABLE IF NOT EXISTS `DataManagementSystem`.`Role` (
+`roleId` INT NOT NULL,
+`roleType` VARCHAR(45) NULL,
+PRIMARY KEY (`roleId`),
+UNIQUE INDEX `roleId_UNIQUE` (`roleId` ASC))
+ENGINE = InnoDB;
+-- -----------------------------------------------------
+-- Table `DataManagementSystem`.`Association`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `DataManagementSystem`.`Association` ;
+CREATE TABLE IF NOT EXISTS `DataManagementSystem`.`Association` (
+`index` INT NULL,
+`dataPointsId` INT NOT NULL,
+`conceptId` INT NOT NULL,
+`roleId` INT NOT NULL,
+PRIMARY KEY (`dataPointsId`, `conceptId`, `roleId`),
+INDEX `fk_Association_Concept1_idx` (`conceptId` ASC),
+INDEX `fk_Association_Role1_idx` (`roleId` ASC),
+CONSTRAINT `fk_Association_DataPoints1`
+FOREIGN KEY (`dataPointsId`)
+REFERENCES `DataManagementSystem`.`DataPoints` (`dataPointsId`)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION,
+CONSTRAINT `fk_Association_Concept1`
+FOREIGN KEY (`conceptId`)
+REFERENCES `DataManagementSystem`.`Concept` (`conceptId`)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION,
+CONSTRAINT `fk_Association_Role1`
+FOREIGN KEY (`roleId`)
+REFERENCES `DataManagementSystem`.`Role` (`roleId`)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+</code></pre>
+<p><em><strong>Data Manipulation Language (мова управління (маніпулювання) даними).</strong></em> Це мова
+керування даними, за допомогою якого можна витягувати і змінювати дані.</p>
+<p>Для <em><strong>вибірки даних</strong></em> з БД використовується запит <code>SELECT</code>. Він дозволяє робити
+вибірку потрібних даних з таблиць і перетворювати до потрібного виду отримані
+результати. У загальному випадку результатом реалізації запиту <code>SELECT</code>, є інша
+таблиця, яку будемо називати таблицею результатів запиту (ТРЗ). До цієї нової
+(робочої) таблиці може бути знову застосовано запит <code>SELECT</code>, і т.д., тобто такі
+операції можуть бути вкладені одна в одну.</p>
+<p>Таблиця "Persons":</p>
+<div class="table-wrapper"><table><thead><tr><th>P_Id</th><th>LastName</th><th>FirstName</th><th>Address</th><th>City</th></tr></thead><tbody>
+<tr><td>1</td><td>Hansen</td><td>Ola</td><td>Timoteivn 10</td><td>Sandnes</td></tr>
+<tr><td>2</td><td>Svendson</td><td>Tove</td><td>Borgvn 23</td><td>Sandnes</td></tr>
+<tr><td>3</td><td>Pettersen</td><td>Kari</td><td>Storgt 20</td><td>Stavanger</td></tr>
+</tbody></table>
+</div>
+<p>Тепер ми хочемо вибрати зміст колонок під назвою "<em>LastName</em> " та "<em>FirstName</em>"
+з таблиці вище.</p>
+<p>Ми використаємо команду SELECT таким чином:</p>
+<pre><code class="language-sql">SELECT LastName,FirstName FROM Persons
+</code></pre>
+<p>В результаті отримаємо:</p>
+<div class="table-wrapper"><table><thead><tr><th>LastName</th><th>FirstName</th></tr></thead><tbody>
+<tr><td>Hansen</td><td>Ola</td></tr>
+<tr><td>Svendson</td><td>Tove</td></tr>
+<tr><td>Pettersen</td><td>Kari</td></tr>
+</tbody></table>
+</div>
+<p>Таблиця "Persons":</p>
+<div class="table-wrapper"><table><thead><tr><th>P_Id</th><th>LastName</th><th>FirstName</th><th>Address</th><th>City</th></tr></thead><tbody>
+<tr><td>1</td><td>Hansen</td><td>Ola</td><td>Timoteivn 10</td><td>Sandnes</td></tr>
+<tr><td>2</td><td>Svendson</td><td>Tove</td><td>Borgvn 23</td><td>Sandnes</td></tr>
+<tr><td>3</td><td>Pettersen</td><td>Kari</td><td>Storgt 20</td><td>Stavanger</td></tr>
+<tr><td>4</td><td>Nilsen</td><td>Johan</td><td>Bakken 2</td><td>Stavanger</td></tr>
+<tr><td>5</td><td>Tjessem</td><td>Jakob</td><td></td><td></td></tr>
+</tbody></table>
+</div>
+<p>Тепер ми хочемо оновити персону " TjessemJakob " в таблиці " Persons ".</p>
+<p>Ми використовуємо такі команди SQL:</p>
+<pre><code class="language-sql">UPDATE Persons  
+SET Address='Nissestien 67', City='Sandnes'  
+WHERE LastName='Tjessem' AND FirstName='Jakob'
+</code></pre>
+<p>В результаті отримаємо:</p>
+<div class="table-wrapper"><table><thead><tr><th>P_Id</th><th>LastName</th><th>FirstName</th><th>Address</th><th>City</th></tr></thead><tbody>
+<tr><td>1</td><td>Hansen</td><td>Ola</td><td>Timoteivn 10</td><td>Sandnes</td></tr>
+<tr><td>2</td><td>Svendson</td><td>Tove</td><td>Borgvn 23</td><td>Sandnes</td></tr>
+<tr><td>3</td><td>Pettersen</td><td>Kari</td><td>Storgt 20</td><td>Stavanger</td></tr>
+<tr><td>4</td><td>Nilsen</td><td>Johan</td><td>Bakken 2</td><td>Stavanger</td></tr>
+<tr><td>5</td><td>Tjessem</td><td>Jakob</td><td>Nissestien 67</td><td>Sandnes</td></tr>
+</tbody></table>
+</div>
+<p>Таблиця "Persons":</p>
+<div class="table-wrapper"><table><thead><tr><th>P_Id</th><th>LastName</th><th>FirstName</th><th>Address</th><th>City</th></tr></thead><tbody>
+<tr><td>1</td><td>Hansen</td><td>Ola</td><td>Timoteivn 10</td><td>Sandnes</td></tr>
+<tr><td>2</td><td>Svendson</td><td>Tove</td><td>Borgvn 23</td><td>Sandnes</td></tr>
+<tr><td>3</td><td>Pettersen</td><td>Kari</td><td>Storgt 20</td><td>Stavanger</td></tr>
+</tbody></table>
+</div>
+<p>Треба вставити новий рядок в таблицю "Persons".</p>
+<pre><code class="language-sql">INSERT INTO Persons  
+VALUES (4,'Nilsen', 'Johan', 'Bakken 2', 'Stavanger')
+</code></pre>
+<p>В результаті отримаємо:</p>
+<div class="table-wrapper"><table><thead><tr><th>P_Id</th><th>LastName</th><th>FirstName</th><th>Address</th><th>City</th></tr></thead><tbody>
+<tr><td>1</td><td>Hansen</td><td>Ola</td><td>Timoteivn 10</td><td>Sandnes</td></tr>
+<tr><td>2</td><td>Svendson</td><td>Tove</td><td>Borgvn 23</td><td>Sandnes</td></tr>
+<tr><td>3</td><td>Pettersen</td><td>Kari</td><td>Storgt 20</td><td>Stavanger</td></tr>
+<tr><td>4</td><td>Nilsen</td><td>Johan</td><td>Bakken 2</td><td>Stavanger</td></tr>
+</tbody></table>
+</div>
+<p><strong>Завдання</strong></p>
+<p>Вивчити основи мови структурних запитів SQL, недоліки та переваги мови, цілі
+створення, стандарт-ревізії, сумісність мови.</p>
+<p>Детально вивчити основні команди SQL та їх особливості. Вільно володіти такими
+командами Select, Insert, Update.</p>
+<p>Створити базу даних. Виконати зміну бази по варіанту.</p>
+<p><strong>Питання для самостійної перевірки</strong></p>
+<ol>
+<li>
+<p>Дайте визначення SQL?</p>
+</li>
+<li>
+<p>Чи є SQL мовою програмування?</p>
+</li>
+<li>
+<p>Перелічите основні завдання й функції SQL</p>
+</li>
+<li>
+<p>DDL дайте визначення й назвіть характерні риси</p>
+</li>
+<li>
+<p>DML призначення й принципи</p>
+</li>
+<li>
+<p>Які різновиди DML мови ви знаєте?</p>
+</li>
+<li>
+<p>Які є об'єкти в БД?</p>
+</li>
+<li>
+<p>Назвіть основні функції операторів Create, Drop й Alter</p>
+</li>
+<li>
+<p>Приведіть приклад синтаксису операторів Create, Drop й Alter</p>
+</li>
+<li>
+<p>Коротка характеристика команди SELECT, її особливості.</p>
+</li>
+<li>
+<p>Коротка характеристика команди UPDATE, її особливості.</p>
+</li>
+<li>
+<p>Коротка характеристика команди INSERT, її особливості.</p>
+</li>
+</ol>
+<h1 id="Лабораторна-робота-6-Реалізація-обєктно-реляційного-відображення"><a class="header" href="#Лабораторна-робота-6-Реалізація-обєктно-реляційного-відображення">Лабораторна робота №6. Реалізація об’єктно-реляційного відображення</a></h1>
+<p><strong>МЕТА:</strong>
+Отримання навичок зі створення DAO-інфраструктури для доступу до MySQL баз
+даних.</p>
+<p><strong>ДОВІДКА</strong></p>
+<p><em><strong>DAO</strong></em> - об'єкт що надає абстрактний інтерфейс до деяких видів баз даних чи
+механізмів персистентності реалізуючи певні операції без розкриття деталей бази
+даних. Він надає відображення від програмних викликів до рівня персистентності.
+Така ізоляція розділює запити до даних в термінах предметної області та їх
+реалізацію засобами СКБД.</p>
+<p>Персистентність - здатність стану існувати довше, ніж процес, що створив його.
+Без цієї можливості, стан може існувати лише в оперативній пам'яті і
+втрачається, коли оперативна пам'ять вимикається, наприклад, при вимкненні
+комп'ютера.</p>
+<p><img src="http://www.plantuml.com/plantuml/proxy?cache=no&amp;src=https://raw.githubusercontent.com/boldak/database_basics_template/master/src/uml/dao.puml" alt="uml" /></p>
+<p><em><strong>Active Record</strong></em> - це шаблон проектування, що використовується при реалізації доступу до реляційних баз даних. Вперше згадується Мартіном Фаулером в книжці Patterns of Enterprise Application Architecture. Цей шаблон є підвидом DAO, але навідміну від нього, він надає CRUD API кожному окремому об'єкту, який репрезентує окремий запис в таблиці БД.</p>
+<p><strong>Завдання</strong></p>
+<ol>
+<li>
+<p>Ознайомитись з призначенням шаблону Data Access Object</p>
+</li>
+<li>
+<p>Створити базу даних у MySQL</p>
+</li>
+<li>
+<p>Створити bean-класи по одному для кожної таблиці, які складаються з опису
+одного рядка таблиці.</p>
+</li>
+<li>
+<p>Розробити DAO-інфраструктуру для роботи з базою даних.</p>
+</li>
+<li>
+<p>Розробити програму для тестування можливостей DAO, яка створює деякі об’єкти
+в кожній таблиці та шукає існуючи їх по деяким ознакам.</p>
+</li>
+<li>
+<p>Запустити програму та продивитись результати її роботи у MySQL.</p>
+</li>
+</ol>
+<p><strong>Питання для самостійної перевірки</strong></p>
+<ol>
+<li>
+<p>Яке основне призначення DAO</p>
+</li>
+<li>
+<p>Які три основні можливі реалізації механізму в Java</p>
+</li>
+<li>
+<p>Які переваги від розділення реалізації роботи з СКБД та прозорою роботою з
+даними в програмі</p>
+</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Теми-проєктів"><a class="header" href="#Теми-проєктів">Теми проєктів</a></h1>
+<h2 id="1-Система-організації-та-управління-опитуваннями-експертів"><a class="header" href="#1-Система-організації-та-управління-опитуваннями-експертів">1. Система організації та управління опитуваннями експертів</a></h2>
+<p>Необхідно розробити систему, яка надає веб-доступ до інструментів, призначених для створення та модифікації опитувань, організації процесів експертних опитувань та обробки іх результатів. Аналоги:</p>
+<ul>
+<li><a href="https://www.google.com/intl/ru_ua/forms/about/">Google Forms</a></li>
+<li><a href="https://ru.surveymonkey.com/">SurveyMonkey</a></li>
+<li><a href="https://www.survio.com/ru/">Survio</a></li>
+<li><a href="https://surveyjs.io/">SurveyJS</a></li>
+<li>Система <a href="https://oca.com.ua/">“ОСА”</a></li>
+</ul>
+<h2 id="2-Система-управління-відкритими-даними"><a class="header" href="#2-Система-управління-відкритими-даними">2. Система управління відкритими даними</a></h2>
+<p>Необхідно розробити веб-систему, яка реалізує повний життєвий цикл даних. Аналоги:</p>
+<ul>
+<li><a href="https://www.gapminder.org/">Gapminder</a></li>
+<li><a href="https://databank.worldbank.org/home.aspx">The World Bank DataBank</a></li>
+<li><a href="https://www.google.com/publicdata/directory">Google Public Data Explorer</a></li>
+<li><a href="https://stat.gov.pl/en/">Statistics Poland</a></li>
+<li><a href="https://ec.europa.eu/eurostat/data/database">Eurostat</a></li>
+<li><a href="https://dataverse.org/">Dataverse</a></li>
+</ul>
+<h2 id="3-Система-аналізу-медіа-контенту"><a class="header" href="#3-Система-аналізу-медіа-контенту">3. Система аналізу медіа-контенту</a></h2>
+<p>Необхідно розробити веб-сервіс для збору, опрацювання та інтелектуального аналізу медіа-контенту. Аналоги:</p>
+<ul>
+<li><a href="https://promo.semantrum.net/uk/golovna/">Semantrum</a></li>
+<li><a href="https://neticle.com/mediaintelligence/hu/">neticle Media Intelligence</a></li>
+<li><a href="https://youscan.io/">youscan</a></li>
+</ul>
+<h2 id="4-Система-управління-проектами"><a class="header" href="#4-Система-управління-проектами">4. Система управління проектами</a></h2>
+<p>Необхідно розробити систему для організації колективної роботи над проектами з інтеграцією з системами контролю версій. Аналоги:</p>
+<ul>
+<li><a href="https://github.com/features/project-management/">github projects</a></li>
+<li><a href="https://trello.com/?&amp;aceid=&amp;adposition=&amp;adgroup=105703214568&amp;campaign=9843285538&amp;creative=437184392329&amp;device=c&amp;keyword=trello&amp;matchtype=e&amp;network=g&amp;placement=&amp;ds_kids=p53016490713&amp;ds_e=GOOGLE&amp;ds_eid=700000001557344&amp;ds_e1=GOOGLE&amp;gclid=CjwKCAjwnK36BRBVEiwAsMT8WLDlTD0hdkICreyQdQwm87FskKZLBKijWsGzyxiXSpjStvszO8OfwRoCqegQAvD_BwE&amp;gclsrc=aw.ds">trello</a></li>
+<li><a href="https://basecamp.com/">basecamp</a></li>
+<li><a href="https://niftypm.com/">nifty</a></li>
+<li><a href="https://backlog.com/">backlog</a></li>
+<li><a href="https://asana.com/home?utm_expid=.5Vei3MMKRWq4PUVVS92Z8w.1&amp;utm_referrer=https%3A%2F%2Fmopinion.com%2Ftop-20-best-project-management-software-an-overview%2F">asana</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>
