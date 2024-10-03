@@ -1,6 +1,6 @@
 [book]
 language = "uk"
-multilingual = false
+multilingual = true
 src = "./"
 
 authors = ["Max Netyaga \"@maxnetyaga\""]
