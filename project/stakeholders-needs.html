@@ -228,7 +228,22 @@
 </li>
 </ol>
 <h2 id="Характеристика-ділових-процесів"><a class="header" href="#Характеристика-ділових-процесів">Характеристика ділових процесів</a></h2>
-<div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><strong>CreateAccount</strong></th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><strong>UserSignIn</strong></th></tr></thead><tbody>
+<tr><td><strong>Назва</strong></td><td>Зареєструвати користувача (Sign In)</td></tr>
+<tr><td><strong>Учасники</strong></td><td>Користувач (тімлід, або розробник), система</td></tr>
+<tr><td><strong>Передумови</strong></td><td>Користувач не має облікового запису в системі</td></tr>
+<tr><td><strong>Результат</strong></td><td>Створений обліковий запис користувача</td></tr>
+<tr><td><strong>Виключні ситуації</strong></td><td>Користувач не заповнив усі обов'язкові поля форми для реєстрації <code>NullReferenceException</code></td></tr>
+<tr><td></td><td>Обліковий запис вже існує у системі <code>UserAlreadyExistsException</code></td></tr>
+<tr><td></td><td></td></tr>
+<tr><td><strong>Основний сценарій</strong></td><td>1. Користувач натискає кнопку "Створити обліковий запис"</td></tr>
+<tr><td></td><td>2. Користувач вводить реєстраційні дані</td></tr>
+<tr><td></td><td>3. Користувач натискає кнопку "Зареєструватися"</td></tr>
+<tr><td></td><td>4. Система перевіряє наявність облікового запису користувача</td></tr>
+<tr><td></td><td>5. Система створює новий обліковий запис</td></tr>
+<tr><td></td><td>6. Користувач переходить у щойностворений обліковий запис</td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><strong>CreateAccount</strong></th></tr></thead><tbody>
 <tr><td><strong>Назва</strong></td><td>Створення облікового запису</td></tr>
 <tr><td><strong>Учасники</strong></td><td>Користувач, система</td></tr>
 <tr><td><strong>Передумови</strong></td><td>Користувач не зареєстрований</td></tr>
@@ -344,6 +359,54 @@
 <tr><td><strong>Результат</strong></td><td>Сповіщення налаштовані</td></tr>
 <tr><td><strong>Виключні ситуації</strong></td><td>Користувач не вказав email для отримання сповіщень<br> Користувачеві заблоковані сповіщення<br> -Відсутні обов'язкові налаштування сповіщень<br> -Користувач натиснув "Скасувати"</td></tr>
 <tr><td><strong>Основний сценарій</strong></td><td>1. Користувач заходить у налаштування свого акаунта і натискає "Керувати сповіщеннями"<br>2. Користувач натискає "Налаштувати сповіщення"<br>3. Система відкриває форму для налаштування сповіщень<br>4. Користувач обирає частоту і канал отримання сповіщень: email або мобільний додаток<br>5. Користувач підтверджує налаштування <br>6. Система перевіряє правильність налаштувань <br>7. Система активує налаштування сповіщень для користувача</td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><strong>FilterTask</strong></th></tr></thead><tbody>
+<tr><td><strong>Назва</strong></td><td>Відфільтрувати завдання</td></tr>
+<tr><td><strong>Учасники</strong></td><td>Користувач (тімлід, або робітник), система</td></tr>
+<tr><td><strong>Передумови</strong></td><td>- Користувач авторизований</td></tr>
+<tr><td></td><td></td></tr>
+<tr><td><strong>Результат</strong></td><td>Відфільтровані завдання</td></tr>
+<tr><td><strong>Виключні ситуації</strong></td><td>У проєкті нема жодних завдань <code>NoTasksException</code></td></tr>
+<tr><td><strong>Основний сценарій</strong></td><td>1. Користувач натискає кнопку "Використати фільтр"</td></tr>
+<tr><td></td><td>2. Користувач обирає параметри для фільтрування</td></tr>
+<tr><td></td><td>3. Система відображає відфільтровані завдання</td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><strong>CommentTask</strong></th></tr></thead><tbody>
+<tr><td><strong>Назва</strong></td><td>Коментувати завдання</td></tr>
+<tr><td><strong>Учасники</strong></td><td>Користувач (тімлід, або робітник), система</td></tr>
+<tr><td><strong>Передумови</strong></td><td>- Користувач авторизований</td></tr>
+<tr><td></td><td>- Користувач обрав проєкт</td></tr>
+<tr><td></td><td>- Користувач обрав завдання</td></tr>
+<tr><td><strong>Результат</strong></td><td>Коментар до завдання</td></tr>
+<tr><td><strong>Виключні ситуації</strong></td><td>Користувач скасував операцію <code>CancelCommentException</code></td></tr>
+<tr><td><strong>Основний сценарій</strong></td><td>1. Користувач натискає кнопку "Додати коментар"</td></tr>
+<tr><td></td><td>2. Користувач пише коментар (можливе <code>CancelCommentException</code>)</td></tr>
+<tr><td></td><td>3. Користувач натискає кнопку "Надіслати"</td></tr>
+<tr><td></td><td>4. Система зберігає коментар та повідомляє інших учасників цього завдання про новий коментар</td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><strong>BanUser</strong></th></tr></thead><tbody>
+<tr><td><strong>Назва</strong></td><td>Блокувати користувача</td></tr>
+<tr><td><strong>Учасники</strong></td><td>Користувач (адміністратор системи, тімлід або робітник), система</td></tr>
+<tr><td><strong>Передумови</strong></td><td>- Користувач порушив угоди використання програмного забезпечення</td></tr>
+<tr><td><strong>Результат</strong></td><td>Блокування користувача</td></tr>
+<tr><td><strong>Виключні ситуації</strong></td><td>Користувача вже заблоковано <code>UserIsBannedException</code></td></tr>
+<tr><td><strong>Основний сценарій</strong></td><td>1. Адміністратор отримав велику кількість скарг</td></tr>
+<tr><td></td><td>2. Адміністратор робить висновок щодо блокування користувача</td></tr>
+<tr><td></td><td>3. Адміністратор системи натискає на "Дії з користувачем"</td></tr>
+<tr><td></td><td>4. Адміністратор заповнює форму для блокування</td></tr>
+<tr><td></td><td>5. Адміністратор натискає на "Заблокувати користувача"</td></tr>
+<tr><td></td><td>6. Система блокує користувача</td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><strong>UnbanUser</strong></th></tr></thead><tbody>
+<tr><td><strong>Назва</strong></td><td>Розблокувати користувача</td></tr>
+<tr><td><strong>Учасники</strong></td><td>Користувач (адміністратор системи, тімлід або робітник), система</td></tr>
+<tr><td><strong>Передумови</strong></td><td>- Користувач заблокований</td></tr>
+<tr><td><strong>Результат</strong></td><td>Розблокування профілю користувача</td></tr>
+<tr><td><strong>Виключні ситуації</strong></td><td>Користувача вже розблоковано <code>UserIsUnbannedException</code></td></tr>
+<tr><td><strong>Основний сценарій</strong></td><td>1. Адміністратор  знаходить заблокованого користувача</td></tr>
+<tr><td></td><td>2. Адміністратор системи натискає на користувача</td></tr>
+<tr><td></td><td>3. Адміністратор  натискає на "Розблокувати користувача"</td></tr>
+<tr><td></td><td>4. Система  розблоковує доступ користувачу та  повідомляє йому інформацію про розблокування</td></tr>
 </tbody></table>
 </div>
 <h2 id="Короткий-огляд-продукту"><a class="header" href="#Короткий-огляд-продукту">Короткий огляд продукту</a></h2>

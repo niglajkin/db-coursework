@@ -811,7 +811,22 @@ Telegram: <a href="https://t.me/pqpj5">@pqpj5</a></p>
 </li>
 </ol>
 <h2 id="Характеристика-ділових-процесів"><a class="header" href="#Характеристика-ділових-процесів">Характеристика ділових процесів</a></h2>
-<div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><strong>CreateAccount</strong></th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><strong>UserSignIn</strong></th></tr></thead><tbody>
+<tr><td><strong>Назва</strong></td><td>Зареєструвати користувача (Sign In)</td></tr>
+<tr><td><strong>Учасники</strong></td><td>Користувач (тімлід, або розробник), система</td></tr>
+<tr><td><strong>Передумови</strong></td><td>Користувач не має облікового запису в системі</td></tr>
+<tr><td><strong>Результат</strong></td><td>Створений обліковий запис користувача</td></tr>
+<tr><td><strong>Виключні ситуації</strong></td><td>Користувач не заповнив усі обов'язкові поля форми для реєстрації <code>NullReferenceException</code></td></tr>
+<tr><td></td><td>Обліковий запис вже існує у системі <code>UserAlreadyExistsException</code></td></tr>
+<tr><td></td><td></td></tr>
+<tr><td><strong>Основний сценарій</strong></td><td>1. Користувач натискає кнопку "Створити обліковий запис"</td></tr>
+<tr><td></td><td>2. Користувач вводить реєстраційні дані</td></tr>
+<tr><td></td><td>3. Користувач натискає кнопку "Зареєструватися"</td></tr>
+<tr><td></td><td>4. Система перевіряє наявність облікового запису користувача</td></tr>
+<tr><td></td><td>5. Система створює новий обліковий запис</td></tr>
+<tr><td></td><td>6. Користувач переходить у щойностворений обліковий запис</td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><strong>CreateAccount</strong></th></tr></thead><tbody>
 <tr><td><strong>Назва</strong></td><td>Створення облікового запису</td></tr>
 <tr><td><strong>Учасники</strong></td><td>Користувач, система</td></tr>
 <tr><td><strong>Передумови</strong></td><td>Користувач не зареєстрований</td></tr>
@@ -928,6 +943,54 @@ Telegram: <a href="https://t.me/pqpj5">@pqpj5</a></p>
 <tr><td><strong>Виключні ситуації</strong></td><td>Користувач не вказав email для отримання сповіщень<br> Користувачеві заблоковані сповіщення<br> -Відсутні обов'язкові налаштування сповіщень<br> -Користувач натиснув "Скасувати"</td></tr>
 <tr><td><strong>Основний сценарій</strong></td><td>1. Користувач заходить у налаштування свого акаунта і натискає "Керувати сповіщеннями"<br>2. Користувач натискає "Налаштувати сповіщення"<br>3. Система відкриває форму для налаштування сповіщень<br>4. Користувач обирає частоту і канал отримання сповіщень: email або мобільний додаток<br>5. Користувач підтверджує налаштування <br>6. Система перевіряє правильність налаштувань <br>7. Система активує налаштування сповіщень для користувача</td></tr>
 </tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><strong>FilterTask</strong></th></tr></thead><tbody>
+<tr><td><strong>Назва</strong></td><td>Відфільтрувати завдання</td></tr>
+<tr><td><strong>Учасники</strong></td><td>Користувач (тімлід, або робітник), система</td></tr>
+<tr><td><strong>Передумови</strong></td><td>- Користувач авторизований</td></tr>
+<tr><td></td><td></td></tr>
+<tr><td><strong>Результат</strong></td><td>Відфільтровані завдання</td></tr>
+<tr><td><strong>Виключні ситуації</strong></td><td>У проєкті нема жодних завдань <code>NoTasksException</code></td></tr>
+<tr><td><strong>Основний сценарій</strong></td><td>1. Користувач натискає кнопку "Використати фільтр"</td></tr>
+<tr><td></td><td>2. Користувач обирає параметри для фільтрування</td></tr>
+<tr><td></td><td>3. Система відображає відфільтровані завдання</td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><strong>CommentTask</strong></th></tr></thead><tbody>
+<tr><td><strong>Назва</strong></td><td>Коментувати завдання</td></tr>
+<tr><td><strong>Учасники</strong></td><td>Користувач (тімлід, або робітник), система</td></tr>
+<tr><td><strong>Передумови</strong></td><td>- Користувач авторизований</td></tr>
+<tr><td></td><td>- Користувач обрав проєкт</td></tr>
+<tr><td></td><td>- Користувач обрав завдання</td></tr>
+<tr><td><strong>Результат</strong></td><td>Коментар до завдання</td></tr>
+<tr><td><strong>Виключні ситуації</strong></td><td>Користувач скасував операцію <code>CancelCommentException</code></td></tr>
+<tr><td><strong>Основний сценарій</strong></td><td>1. Користувач натискає кнопку "Додати коментар"</td></tr>
+<tr><td></td><td>2. Користувач пише коментар (можливе <code>CancelCommentException</code>)</td></tr>
+<tr><td></td><td>3. Користувач натискає кнопку "Надіслати"</td></tr>
+<tr><td></td><td>4. Система зберігає коментар та повідомляє інших учасників цього завдання про новий коментар</td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><strong>BanUser</strong></th></tr></thead><tbody>
+<tr><td><strong>Назва</strong></td><td>Блокувати користувача</td></tr>
+<tr><td><strong>Учасники</strong></td><td>Користувач (адміністратор системи, тімлід або робітник), система</td></tr>
+<tr><td><strong>Передумови</strong></td><td>- Користувач порушив угоди використання програмного забезпечення</td></tr>
+<tr><td><strong>Результат</strong></td><td>Блокування користувача</td></tr>
+<tr><td><strong>Виключні ситуації</strong></td><td>Користувача вже заблоковано <code>UserIsBannedException</code></td></tr>
+<tr><td><strong>Основний сценарій</strong></td><td>1. Адміністратор отримав велику кількість скарг</td></tr>
+<tr><td></td><td>2. Адміністратор робить висновок щодо блокування користувача</td></tr>
+<tr><td></td><td>3. Адміністратор системи натискає на "Дії з користувачем"</td></tr>
+<tr><td></td><td>4. Адміністратор заповнює форму для блокування</td></tr>
+<tr><td></td><td>5. Адміністратор натискає на "Заблокувати користувача"</td></tr>
+<tr><td></td><td>6. Система блокує користувача</td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><strong>UnbanUser</strong></th></tr></thead><tbody>
+<tr><td><strong>Назва</strong></td><td>Розблокувати користувача</td></tr>
+<tr><td><strong>Учасники</strong></td><td>Користувач (адміністратор системи, тімлід або робітник), система</td></tr>
+<tr><td><strong>Передумови</strong></td><td>- Користувач заблокований</td></tr>
+<tr><td><strong>Результат</strong></td><td>Розблокування профілю користувача</td></tr>
+<tr><td><strong>Виключні ситуації</strong></td><td>Користувача вже розблоковано <code>UserIsUnbannedException</code></td></tr>
+<tr><td><strong>Основний сценарій</strong></td><td>1. Адміністратор  знаходить заблокованого користувача</td></tr>
+<tr><td></td><td>2. Адміністратор системи натискає на користувача</td></tr>
+<tr><td></td><td>3. Адміністратор  натискає на "Розблокувати користувача"</td></tr>
+<tr><td></td><td>4. Система  розблоковує доступ користувачу та  повідомляє йому інформацію про розблокування</td></tr>
+</tbody></table>
 </div>
 <h2 id="Короткий-огляд-продукту"><a class="header" href="#Короткий-огляд-продукту">Короткий огляд продукту</a></h2>
 <p>Система управління проєктами — це програмне рішення, яке допомагає організаціям планувати, відстежувати та керувати проєктами від початку до завершення. Система забезпечує зручні інструменти для створення та призначення завдань, управління ресурсами, встановлення дедлайнів, а також моніторингу прогресу проєкту. Вона також сприяє командній співпраці, надаючи можливості для спільної роботи, комунікації. Система легко адаптується до потреб користувачів і допомагає організаціям ефективніше досягати поставлених цілей.</p>
@@ -985,11 +1048,7 @@ Telegram: <a href="https://t.me/pqpj5">@pqpj5</a></p>
 <li><strong>Здатність легкого масштабування:</strong> архітектура системи, що дозволяє швидко адаптуватися до зростання навантаження або збільшення кількості користувачів без зниження продуктивності.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="Розроблення-функціональних-вимог-до-системи"><a class="header" href="#Розроблення-функціональних-вимог-до-системи">Розроблення функціональних вимог до системи</a></h1>
-<h2 id="Модель-прецедентів"><a class="header" href="#Модель-прецедентів">Модель прецедентів</a></h2>
-<p>В цьому файлі необхідно перелічити всі документи, розроблені в проекті та дати посилання на них.</p>
-<p><em>Модель прецедентів повинна містити загальні оглядові діаграми та специфікації прецедентів.</em></p>
-<p>Вбудовування зображень діаграм здійснюється з використанням сервісу <a href="https://plantuml.com/">plantuml.com</a>.</p>
-<p>В markdown-файлі використовується опис діаграми</p>
+<h2 id="Загальна-схема"><a class="header" href="#Загальна-схема">Загальна схема</a></h2>
 <pre><code class="language-md">
 &lt;center style="
     border-radius:4px;
@@ -999,124 +1058,129 @@ Telegram: <a href="https://t.me/pqpj5">@pqpj5</a></p>
 &gt;
 
 @startuml
+skinparam noteFontColor white
 
-    right header
-        &lt;font size=24 color=black&gt;Package: &lt;b&gt;UCD_3.0
-    end header
-
-    title
-        &lt;font size=18 color=black&gt;UC_8. Редагувати конфігурацію порталу
-        &lt;font size=16 color=black&gt;Діаграма прецедентів
-    end title
+actor "Робітник" as Collaborator
 
 
-    actor "Користувач" as User #eeeeaa
-    
-    package UCD_1{
-        usecase "&lt;b&gt;UC_1&lt;/b&gt;\nПереглянути список \nзвітів" as UC_1 #aaeeaa
-    }
-    
-    usecase "&lt;b&gt;UC_1.1&lt;/b&gt;\nЗастосувати фільтр" as UC_1.1
-    usecase "&lt;b&gt;UC_1.2&lt;/b&gt;\nПереглянути метадані \nзвіту" as UC_1.2  
-    usecase "&lt;b&gt;UC_1.2.1&lt;/b&gt;\nДати оцінку звіту" as UC_1.2.1  
-    usecase "&lt;b&gt;UC_1.2.2&lt;/b&gt;\nПереглянути інформацію \nпро авторів звіту" as UC_1.2.2
-    
-    package UCD_1 {
-        usecase "&lt;b&gt;UC_4&lt;/b&gt;\nВикликати звіт" as UC_4 #aaeeaa
-    }
-    
-    usecase "&lt;b&gt;UC_1.1.1&lt;/b&gt;\n Використати \nпошукові теги" as UC_1.1.1  
-    usecase "&lt;b&gt;UC_1.1.2&lt;/b&gt;\n Використати \nрядок пошуку" as UC_1.1.2
-    usecase "&lt;b&gt;UC_1.1.3&lt;/b&gt;\n Використати \nавторів" as UC_1.1.3  
-    
-    
-    
-    User -&gt; UC_1
-    UC_1.1 .u.&gt; UC_1 :extends
-    UC_1.2 .u.&gt; UC_1 :extends
-    UC_4 .d.&gt; UC_1.2 :extends
-    UC_1.2 .&gt; UC_1.2 :extends
-    UC_1.2.1 .u.&gt; UC_1.2 :extends
-    UC_1.2.2 .u.&gt; UC_1.2 :extends
-    UC_1 ..&gt; UC_1.2.2 :extends
-    
-    
-    UC_1.1.1 -u-|&gt; UC_1.1
-    UC_1.1.2 -u-|&gt; UC_1.1
-    UC_1.1.3 -u-|&gt; UC_1.1
-    
-    right footer
-        Аналітичний портал. Модель прецедентів.
-        НТУУ КПІ ім.І.Сікорського
-        Киів-2020
-    end footer
+usecase "&lt;b&gt;SignIn&lt;/b&gt;\nЗареєструватися" as SignIn
+usecase "&lt;b&gt;Login&lt;/b&gt;\nВвхід у систему" as Login
+usecase "&lt;b&gt;ManageTasks&lt;/b&gt;\nУправління завданнями" as ManageTasks
+usecase "&lt;b&gt;EditUser&lt;/b&gt;\nРедагування даних користувача" as EditUser
 
+
+Collaborator -r-&gt; SignIn
+Collaborator -u-&gt; Login
+Collaborator -l-&gt; ManageTasks
+Collaborator -u-&gt; EditUser
+
+
+
+
+note bottom of Collaborator  #4e4e4e
+
+   Робітник може повною мірою керувати тільки&lt;b&gt;власними завданнями&lt;/b&gt;
+   та на призначених йому завданнях він має можливість тільки
+   &lt;b&gt;змінювати статус&lt;/b&gt; (to-do/in progress/done/in rewiew).
+   &lt;b&gt;Фільтрувати&lt;/b&gt; та &lt;b&gt;коментувати&lt;/b&gt; робітник може повною мірою &lt;b&gt;всі&lt;/b&gt;
+   &lt;b&gt;завдання проекту&lt;/b&gt;.
+   
+
+end note
+
+actor "Тімлід" as Teamlead
+
+usecase "&lt;b&gt;ProjectManage&lt;/b&gt;\nКерувати проектом" as ProjectManage
+
+
+
+Teamlead -&gt; ProjectManage
+Teamlead -u-|&gt; Collaborator
+
+actor "Адміністратор системи" as Admin
+
+usecase "&lt;b&gt;DataManage&lt;/b&gt;\nКерувати даними системи" as DataManage
+
+
+Admin --&gt; DataManage
+
+Admin -u-|&gt; Teamlead
 @enduml
-
 **Діаграма прецедентів**
 
 &lt;/center&gt;
 </code></pre>
-<p>яка буде відображена наступним чином</p>
-<center style="
-    border-radius:4px;
-    border: 1px solid #cfd7e6;
-    box-shadow: 0 1px 3px 0 rgba(89,105,129,.05), 0 1px 1px 0 rgba(0,0,0,.025);
-    padding: 1em;"
-    >
-<pre><code class="language-plantuml">@startuml
+<h2 id="Робітник"><a class="header" href="#Робітник">Робітник</a></h2>
+<pre><code>@startuml
+skinparam noteFontColor white
 
-    right header
-        &lt;font size=24 color=black&gt;Package: &lt;b&gt;UCD_3.0
-    end header
+actor "Робітник" as Collaborator
 
-    title
-        &lt;font size=18 color=black&gt;UC_8. Редагувати конфігурацію порталу
-        &lt;font size=16 color=black&gt;Діаграма прецедентів
-    end title
+usecase "&lt;b&gt;SignIn&lt;/b&gt;\nРеєстрація" as SignIn
+usecase "&lt;b&gt;UserSignIn&lt;/b&gt;\nРеєстрація користувача" as UserSignIn
+usecase "&lt;b&gt;LogIn&lt;/b&gt;\nВхід" as Login
+usecase "&lt;b&gt;UserLogIn&lt;/b&gt;\nВхід користувача" as UserLogIn
+usecase "&lt;b&gt;EditUser&lt;/b&gt;\nРедагувати дані користувача" as EditUser
+usecase "&lt;b&gt;ManageTasks&lt;/b&gt;\nКерувати завданнями" as ManageTasks
+usecase "&lt;b&gt;CreateTask&lt;/b&gt;\nСтворити завдання" as CreateTask
+usecase "&lt;b&gt;EditTask&lt;/b&gt;\nРедагувати завдання" as EditTask
+usecase "&lt;b&gt;DeleteTask&lt;/b&gt;\nВидалити завдання" as DeleteTask
+usecase "&lt;b&gt;FilterTask&lt;/b&gt;\nВідфільтрувати завдання" as FilterTask
+usecase "&lt;b&gt;CommentTask&lt;/b&gt;\nКоментувати завдання" as CommentTask
 
+Collaborator -l-&gt; SignIn
+SignIn &lt;.d. UserSignIn:extends
+Collaborator -r-&gt; Login
+Login &lt;.d. UserLogIn:extends
+Collaborator --d-&gt; EditUser
+Collaborator -u-&gt; ManageTasks
+ManageTasks &lt;.u. CommentTask:extends
+ManageTasks &lt;.u. FilterTask:extends
+ManageTasks &lt;.u. DeleteTask:extends
+ManageTasks &lt;.u. EditTask:extends
+ManageTasks&lt;.u. CreateTask:extends
 
-    actor "Користувач" as User #eeeeaa
-    
-    package UCD_1{
-        usecase "&lt;b&gt;UC_1&lt;/b&gt;\nПереглянути список \nзвітів" as UC_1 #aaeeaa
-    }
-    
-    usecase "&lt;b&gt;UC_1.1&lt;/b&gt;\nЗастосувати фільтр" as UC_1.1
-    usecase "&lt;b&gt;UC_1.2&lt;/b&gt;\nПереглянути метадані \nзвіту" as UC_1.2  
-    usecase "&lt;b&gt;UC_1.2.1&lt;/b&gt;\nДати оцінку звіту" as UC_1.2.1  
-    usecase "&lt;b&gt;UC_1.2.2&lt;/b&gt;\nПереглянути інформацію \nпро авторів звіту" as UC_1.2.2
-    
-    package UCD_1 {
-        usecase "&lt;b&gt;UC_4&lt;/b&gt;\nВикликати звіт" as UC_4 #aaeeaa
-    }
-    
-    usecase "&lt;b&gt;UC_1.1.1&lt;/b&gt;\n Використати \nпошукові теги" as UC_1.1.1  
-    usecase "&lt;b&gt;UC_1.1.2&lt;/b&gt;\n Використати \nрядок пошуку" as UC_1.1.2
-    usecase "&lt;b&gt;UC_1.1.3&lt;/b&gt;\n Використати \nавторів" as UC_1.1.3  
-    
-    
-    
-    User -&gt; UC_1
-    UC_1.1 .u.&gt; UC_1 :extends
-    UC_1.2 .u.&gt; UC_1 :extends
-    UC_4 .d.&gt; UC_1.2 :extends
-    UC_1.2 .&gt; UC_1.2 :extends
-    UC_1.2.1 .u.&gt; UC_1.2 :extends
-    UC_1.2.2 .u.&gt; UC_1.2 :extends
-    UC_1 ..&gt; UC_1.2.2 :extends
-    
-    
-    UC_1.1.1 -u-|&gt; UC_1.1
-    UC_1.1.2 -u-|&gt; UC_1.1
-    UC_1.1.3 -u-|&gt; UC_1.1
-    
-    right footer
-        Аналітичний портал. Модель прецедентів.
-        НТУУ КПІ ім.І.Сікорського
-        Киів-2020
-    end footer
+note bottom of Collaborator #4e4e4e
 
+    Робітник може повною мірою керувати тільки&lt;b&gt;власними завданнями&lt;/b&gt;
+   та на призначених йому завданнях він має можливість тільки
+   &lt;b&gt;змінювати статус&lt;/b&gt; (to-do/in progress/done/in rewiew).
+   &lt;b&gt;Фільтрувати&lt;/b&gt; та &lt;b&gt;коментувати&lt;/b&gt; робітник може повною мірою &lt;b&gt;всі&lt;/b&gt;
+   &lt;b&gt;завдання проекту&lt;/b&gt;.
+   
+
+end note
+@enduml
+
+</code></pre>
+<h2 id="Тімлід"><a class="header" href="#Тімлід">Тімлід</a></h2>
+<pre><code>@startuml
+top to bottom direction
+
+actor "Тімлід" as Lead
+
+usecase "&lt;b&gt;CreateProject&lt;/b&gt;\nСтворити проект" as CreateProject
+usecase "&lt;b&gt;DeleteProject&lt;/b&gt;\nВидалити проект" as DeleteProject
+usecase "&lt;b&gt;EditProject&lt;/b&gt;\nРедагувати проект" as EditProject
+usecase "&lt;b&gt;ProjectManage&lt;/b&gt;\nКерувати проєктом" as ProjectManage
+
+CreateProject .d.&gt; ProjectManage: extends
+DeleteProject .d.&gt; ProjectManage: extends
+EditProject .d.&gt; ProjectManage: extends
+
+Lead -u-&gt; ProjectManage
+@enduml
+</code></pre>
+<h2 id="Адміністратор"><a class="header" href="#Адміністратор">Адміністратор</a></h2>
+<pre><code>@startuml
+actor "Адміністратор системи" as Admin
+usecase "&lt;b&gt;DataManage&lt;/b&gt;\nКерувати даними системи" as DataManage
+usecase "&lt;b&gt;BanUser&lt;/b&gt;\nЗаблокувати користувача" as BanUser
+usecase "&lt;b&gt;UnBanUser&lt;/b&gt;\nРозблокувати користувача" as UnBanUser
+
+Admin -d-&gt; DataManage
+BanUser .u.&gt; DataManage:extends
+UnBanUser .u.&gt; DataManage:extends
 @enduml
 </code></pre>
 <p><strong>Діаграма прецедентів</strong></p>
