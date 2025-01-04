@@ -28,8 +28,8 @@ public class GrantController : ControllerBase {
     [HttpGet("{id}")]
     public async Task<ActionResult<GrantEntity>> GetGrant(int id) {
         var grant = await _context.Grants
-            .Include(g => g.Project) // Include Project entity
-            .Include(g => g.User) // Include User entity
+            .Include(g => g.Project) 
+            .Include(g => g.User) 
             .FirstOrDefaultAsync(g => g.Id == id);
 
         if (grant == null) {
