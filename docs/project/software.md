@@ -254,3 +254,141 @@ COMMIT;
 ```
 ## RESTfull сервіс для управління даними
 
+Models
+```C#
+[Table("User")]
+public class UserEntity {
+    public int Id { get; set; }
+    public required string Username { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
+    public int RoleId { get; set; }
+    public string Status { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+}
+```
+
+```C#
+
+[Table("Team")]
+public class TeamEntity {
+    public int Id { get; init; }
+    public DateTime CreatedAt { get; init; } = DateTime.Now;
+}
+
+```
+
+```C#
+[Table("Task")]
+public class TaskEntity {
+    public int Id { get; set; }
+    public string Title { get; set; }
+    public string? Description { get; set; }
+    [ForeignKey("AssignedUser")] public int? AssignedTo { get; set; }
+    [ForeignKey("Project")] public int ProjectId { get; set; }
+    public string Status { get; set; }
+    public string Priority { get; set; }
+    public DateTime? DueDate { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+    public UserEntity? AssignedUser { get; set; }
+    public ProjectEntity Project { get; set; }
+}
+
+```
+
+```C#
+
+[Table("Role")]
+public class RoleEntity {
+    public int Id { get; set; }
+    public string Name { get; set; }
+}
+
+```
+
+```C#
+
+[Table("Project")]
+public class ProjectEntity {
+    public int Id { get; init; }
+    public string Name { get; set; }
+    public string Description { get; set; } 
+    [ForeignKey("Owner")] public int OwnerId { get; set; }
+    [ForeignKey("Team")] public int TeamId { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    
+    public UserEntity Owner { get; set; }
+    public TeamEntity Team { get; set; }
+}
+
+```
+
+```C#
+
+[Table("Member")]
+public class MemberEntity {
+    public int Id { get; set; }
+    [ForeignKey("User")] public int UserId { get; set; }
+    [ForeignKey("Team")]public int TeamId { get; set; }
+    public string TeamRole { get; set; }
+    public DateTime JoinedAt { get; set; } = DateTime.Now;
+    
+    public UserEntity User { get; set; }
+    public TeamEntity Team { get; set; }
+}
+
+```
+
+```C#
+
+[Table("Grant")]
+public class GrantEntity {
+    public int Id { get; init; }
+    [ForeignKey("Project")] public int ProjectId { get; set; }
+    [ForeignKey("User")] public int UserId { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    
+    public ProjectEntity Project { get; set; }
+    public UserEntity User { get; set; }
+}
+
+```
+
+```C#
+
+[Table("Artefact")]
+public class ArtefactEntity {
+    public int Id { get; init; }
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public string FilePath { get; set; }
+    public string FileType { get; set; }
+    [ForeignKey("UploadedByUser")] public int UploadedBy { get; set; }
+    [ForeignKey("Project")] public int ProjectId { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    
+    public UserEntity UploadedByUser { get; set; }
+    public ProjectEntity Project { get; set; }
+}
+
+```
+
+Database context class
+
+```C#
+
+public class ApplicationDbContext : DbContext {
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+
+    public DbSet<UserEntity> Users { get; init; }
+    public DbSet<ProjectEntity> Projects { get; init; }
+    public DbSet<TeamEntity> Teams { get; init; }
+    public DbSet<MemberEntity> Members { get; init; }
+    public DbSet<TaskEntity> Tasks { get; init; }
+    public DbSet<ArtefactEntity> Artefacts { get; init; }
+    public DbSet<GrantEntity> Grants { get; init; }
+    public DbSet<RoleEntity> Roles { get; init; }
+}
+
+```
