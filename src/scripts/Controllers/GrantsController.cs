@@ -2,9 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RESTfulAPI.Models;
 using RESTfulAPI.DTOs;
-using RESTfullAPI.Models;
 
-namespace RESTfullAPI.Controllers;
+namespace RESTfulAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -15,7 +14,6 @@ public class GrantController : ControllerBase {
         _context = context;
     }
 
-    // GET: api/grants
     [HttpGet]
     public async Task<ActionResult<IEnumerable<GrantEntity>>> GetGrants() {
         var grants = await _context.Grants
